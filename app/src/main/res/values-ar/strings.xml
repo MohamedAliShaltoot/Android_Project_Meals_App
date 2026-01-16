@@ -1,3 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">تطبيق وجبات</string>
+    <string name="email">الايميل</string>
+    <string name="welcome_back">مرحبا بعودتك</string>
+    <string name="password">رقم المرور</string>
+    <string name="login">دخول</string>
+    <string name="continue_as_guest">الاستمرار كضيف</string>
+    <string name="name">الاسم</string>
+    <string name="register">تسجيل دخول</string>
+    <string name="create_account">تسجيل حساب</string>
 </resources>
