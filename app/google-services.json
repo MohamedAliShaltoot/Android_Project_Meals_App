@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "803345979744",
+    "project_id": "mealsapp-f0162",
+    "storage_bucket": "mealsapp-f0162.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:803345979744:android:70b7ef53768a705109e605",
+        "android_client_info": {
+          "package_name": "com.example.mealsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "803345979744-e8l0ambssu9e5t5jrf8spqs8e5lukvho.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.mealsapp",
+            "certificate_hash": "6f24e7d10f7c58dd6b3214c18cccc84d2d4894e0"
+          }
+        },
+        {
+          "client_id": "803345979744-ka99iic70upc7cu5m02hr6u31kekdv0o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG8D7yzKEDCUtAT4iFRkICAPlqHtyVC28"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "803345979744-ka99iic70upc7cu5m02hr6u31kekdv0o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
