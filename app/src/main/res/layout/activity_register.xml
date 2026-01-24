@@ -1,27 +1,142 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:padding="24dp"
+    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="match_parent">
 
+    <!-- Title -->
     <TextView
         android:text="@string/create_account"
         android:textSize="26sp"
         android:textStyle="bold"
+        android:textColor="@color/black"
+        android:layout_marginBottom="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <!-- Name -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"/>
+        android:layout_marginBottom="12dp"
+        app:startIconDrawable="@drawable/ic_user"
+        app:startIconTint="@color/primary"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@color/textfield_stroke_color"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusBottomEnd="12dp">
 
-    <EditText android:hint="@string/name"  android:layout_height="wrap_content"
-        android:layout_width="wrap_content"/>
-    <EditText android:hint="@string/email"  android:layout_height="wrap_content"
-        android:layout_width="wrap_content"/>
-    <EditText android:hint="@string/password"  android:layout_height="wrap_content"
-        android:layout_width="wrap_content"/>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etName"
+            android:hint="@string/name"
+            android:textColorHint="@color/gray"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <!-- Email -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:startIconDrawable="@drawable/ic_email"
+        app:startIconTint="@color/primary"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@color/textfield_stroke_color"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusBottomEnd="12dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etEmail"
+            android:hint="@string/email"
+            android:textColorHint="@color/gray"
+            android:inputType="textEmailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Password -->
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:startIconDrawable="@drawable/ic_lock"
+        app:startIconTint="@color/primary"
+        app:endIconMode="password_toggle"
+        app:endIconTint="@color/primary"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@color/textfield_stroke_color"
+        app:boxCornerRadiusTopStart="12dp"
+        app:boxCornerRadiusTopEnd="12dp"
+        app:boxCornerRadiusBottomStart="12dp"
+        app:boxCornerRadiusBottomEnd="12dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPassword"
+            android:hint="@string/password"
+            android:textColorHint="@color/gray"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Register -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
         android:text="@string/register"
+        android:textColor="@color/white"
         android:backgroundTint="@color/primary"
+        app:cornerRadius="12dp"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:visibility="gone"/>
+
+    <!-- Divider -->
+    <TextView
+        android:text="OR"
+        android:textColor="@color/gray"
+        android:layout_marginVertical="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+    <!-- Register with Email -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRegisterWithEmail"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Register with Email"
+        app:icon="@drawable/google_icon"
+        app:iconGravity="textStart"
+        app:strokeWidth="2dp"
+        app:strokeColor="@color/primary"
+        android:textColor="@color/primary"
+        android:backgroundTint="@android:color/transparent"
+        app:cornerRadius="12dp"/>
+
+    <!-- Already have account -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGoLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Already have an account? Login"
+        android:textColor="@color/primary"
+        android:backgroundTint="@android:color/transparent"
+        app:rippleColor="@color/primary"
+        android:layout_gravity="center"/>
+
 </LinearLayout>
