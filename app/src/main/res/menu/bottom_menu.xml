@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/nav_home" android:title="Home" android:icon="@drawable/home" />
-    <item android:id="@+id/nav_fav" android:title="Favorites" android:icon="@drawable/favorite"/>
-    <item android:id="@+id/nav_profile" android:title="Profile" android:icon="@drawable/profile"/>
+    <item android:id="@+id/nav_home" android:title="Home" android:icon="@drawable/home_icon" />
+    <item android:id="@+id/nav_fav" android:title="Favorites" android:icon="@drawable/ic_heart_filled"/>
+    <item android:id="@+id/nav_profile" android:title="Profile" android:icon="@drawable/profile_icon"/>
     <item android:id="@+id/nav_settings" android:title="Search" android:icon="@drawable/search_icon" />
 </menu>
