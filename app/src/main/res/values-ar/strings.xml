@@ -9,4 +9,7 @@
     <string name="name">الاسم</string>
     <string name="register">تسجيل دخول</string>
     <string name="create_account">تسجيل حساب</string>
+    <string name="country">الدولة</string>
+    <string name="category">الفئه</string>
+    <string name="ingredient">المكونات</string>
 </resources>

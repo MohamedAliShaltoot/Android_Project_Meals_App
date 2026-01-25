@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Meals App</string>
+    <string name="app_name">FoodTrack</string>
     <string name="email">Email</string>
     <string name="welcome_back">Welcome Back</string>
     <string name="password">Password</string>
@@ -8,4 +8,7 @@
     <string name="name">Name</string>
     <string name="register">Register</string>
     <string name="create_account">Create Account</string>
+    <string name="country">Country</string>
+    <string name="category">Category</string>
+    <string name="ingredient">Ingredient</string>
 </resources>
