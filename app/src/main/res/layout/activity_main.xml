@@ -9,15 +9,30 @@
         android:id="@+id/container"
         android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"/>
+        android:layout_height="0dp">
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNav"
+    </FrameLayout>
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary"
-        app:itemIconTint="@color/bottom_nav_icon"
-        app:itemTextColor="@color/bottom_nav_icon"
-        app:menu="@menu/bottom_menu"/>
+        android:layout_margin="12dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNav"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="@color/cardview_dark_background"
+            app:itemIconTint="@color/primary"
+            app:itemRippleColor="@color/primary"
+            app:itemTextColor="@color/secondary"
+            app:labelVisibilityMode="selected"
+            app:menu="@menu/bottom_menu" />
+
+    </com.google.android.material.card.MaterialCardView>
+
 
 </LinearLayout>
