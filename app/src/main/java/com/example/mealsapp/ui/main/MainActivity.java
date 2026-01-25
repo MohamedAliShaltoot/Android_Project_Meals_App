@@ -1,24 +1,64 @@
-package com.example.mealsapp;
+package com.example.mealsapp.ui.main;
 
 import android.os.Bundle;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import com.example.mealsapp.R;
+import com.example.mealsapp.ui.main.fragments.FavoritesFragment;
+import com.example.mealsapp.ui.main.fragments.HomeFragment;
+import com.example.mealsapp.ui.main.fragments.ProfileFragment;
+import com.example.mealsapp.ui.main.fragments.SearchFragment;
+import com.example.mealsapp.utils.AppSnackbar;
+import com.example.mealsapp.utils.SnackType;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Fragment homeFragment;
+    private Fragment favoritesFragment;
+    private Fragment profileFragment;
+    private Fragment settingsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
+        AppSnackbar.show(
+                this.findViewById(R.id.bottomNav),
+                "Welcome to Meals App",
+                SnackType.INFO
+        );
+        BottomNavigationView nav = findViewById(R.id.bottomNav);
+
+        homeFragment = new HomeFragment();
+        favoritesFragment = new FavoritesFragment();
+        profileFragment = new ProfileFragment();
+        settingsFragment = new SearchFragment();
+
+        //to make home load once
+        loadFragment(homeFragment);
+
+        nav.setOnItemSelectedListener(item -> {
+            int id = item.getItemId();
+
+            if (id == R.id.nav_home) {
+                loadFragment(homeFragment);
+            } else if (id == R.id.nav_fav) {
+                loadFragment(favoritesFragment);
+            } else if (id == R.id.nav_profile) {
+                loadFragment(profileFragment);
+            } else if (id == R.id.nav_settings) {
+                loadFragment(settingsFragment);
+            }
+            return true;
         });
     }
+
+    void loadFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit();
+    }
 }
+
