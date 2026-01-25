@@ -1,4 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-  
-</selector>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="200dp"
+    android:height="200dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Background circle -->
+    <path
+        android:fillColor="#E3F2FD"
+        android:pathData="M100,20
+            a80,80 0 1,1 0,160
+            a80,80 0 0,1 0,-160z"/>
+
+    <!-- Magnifying glass circle -->
+    <path
+        android:fillColor="#BBDEFB"
+        android:pathData="M90,60
+            a30,30 0 1,1 0,60
+            a30,30 0 0,1 0,-60z"/>
+
+    <!-- Magnifying glass handle -->
+    <path
+        android:fillColor="#90CAF9"
+        android:pathData="M120,120
+            l30,30
+            l-8,8
+            l-30,-30z"/>
+
+    <!-- Slash (no results) -->
+    <path
+        android:fillColor="#64B5F6"
+        android:pathData="M65,115
+            l70,-70
+            l6,6
+            l-70,70z"/>
+</vector>
