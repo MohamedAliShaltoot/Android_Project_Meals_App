@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.mealsapp.R;
-import com.example.mealsapp.ui.auth.LoginActivity;
+import com.example.mealsapp.ui.auth.login.LoginActivity;
 import com.example.mealsapp.ui.main.fragments.profile_fragment.presneter.ProfilePresenter;
 import com.example.mealsapp.ui.main.fragments.profile_fragment.presneter.ProfilePresenterImp;
 import com.example.mealsapp.ui.main.fragments.profile_fragment.presneter.ProfileView;

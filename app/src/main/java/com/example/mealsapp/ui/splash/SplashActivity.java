@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.mealsapp.R;
-import com.example.mealsapp.ui.auth.LoginActivity;
+import com.example.mealsapp.ui.auth.login.LoginActivity;
 import com.example.mealsapp.ui.main.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 
