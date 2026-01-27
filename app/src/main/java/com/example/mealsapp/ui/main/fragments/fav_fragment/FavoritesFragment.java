@@ -1,4 +1,4 @@
-package com.example.mealsapp.ui.main.fragments;
+package com.example.mealsapp.ui.main.fragments.fav_fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

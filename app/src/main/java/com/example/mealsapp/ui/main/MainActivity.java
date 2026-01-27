@@ -4,10 +4,11 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.example.mealsapp.R;
-import com.example.mealsapp.ui.main.fragments.FavoritesFragment;
+import com.example.mealsapp.ui.main.fragments.fav_fragment.FavoritesFragment;
 import com.example.mealsapp.ui.main.fragments.HomeFragment;
 import com.example.mealsapp.ui.main.fragments.ProfileFragment;
 import com.example.mealsapp.ui.main.fragments.SearchFragment;
+import com.example.mealsapp.ui.main.fragments.fav_fragment.Favoritessfragment;
 import com.example.mealsapp.utils.AppSnackbar;
 import com.example.mealsapp.utils.SnackType;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -15,7 +16,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity {
 
     private Fragment homeFragment;
-    private Fragment favoritesFragment;
+    //private Fragment favoritesFragment;
+    private Fragment favoritessfragment;
     private Fragment profileFragment;
     private Fragment settingsFragment;
 
@@ -31,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView nav = findViewById(R.id.bottomNav);
 
         homeFragment = new HomeFragment();
-        favoritesFragment = new FavoritesFragment();
+        //favoritesFragment = new FavoritesFragment();
+        favoritessfragment = new Favoritessfragment();
         profileFragment = new ProfileFragment();
         settingsFragment = new SearchFragment();
 
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             if (id == R.id.nav_home) {
                 loadFragment(homeFragment);
             } else if (id == R.id.nav_fav) {
-                loadFragment(favoritesFragment);
+                loadFragment(favoritessfragment);
             } else if (id == R.id.nav_profile) {
                 loadFragment(profileFragment);
             } else if (id == R.id.nav_settings) {
