@@ -1,4 +1,4 @@
-package com.example.mealsapp.ui.main.fragments.home_fragment;
+package com.example.mealsapp.ui.main.fragments.home_fragment.repo;
 
 
 import com.example.mealsapp.data.model.CategoriesResponse;

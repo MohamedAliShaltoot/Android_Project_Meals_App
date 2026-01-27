@@ -1,4 +1,4 @@
-package com.example.mealsapp.ui.main.fragments.fav_fragment;
+package com.example.mealsapp.ui.main.fragments.fav_fragment.repo;
 
 import androidx.lifecycle.LifecycleOwner;
 import com.example.mealsapp.data.database.localDatabase.FavoriteMeal;
