@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.example.mealsapp.R;
 import com.example.mealsapp.ui.main.fragments.home_fragment.HomeFragment;
-import com.example.mealsapp.ui.main.fragments.ProfileFragment;
+import com.example.mealsapp.ui.main.fragments.profile_fragment.ProfileFragment;
 import com.example.mealsapp.ui.main.fragments.search_fragment.SearchFragment;
 import com.example.mealsapp.ui.main.fragments.fav_fragment.Favoritessfragment;
 import com.example.mealsapp.utils.AppSnackbar;
