@@ -1,50 +1,47 @@
-package com.example.mealsapp.ui.main.fragments;
+package com.example.mealsapp.ui.main.fragments.search_fragment;
 
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.mealsapp.R;
 import com.example.mealsapp.data.model.Meal;
-import com.example.mealsapp.data.model.MealsResponse;
-import com.example.mealsapp.data.network.RetrofitClient;
 import com.example.mealsapp.ui.main.adapters.MealsAdapter;
+import com.example.mealsapp.ui.main.fragments.search_fragment.presenter.SearchPresenter;
+import com.example.mealsapp.ui.main.fragments.search_fragment.presenter.SearchPresenterImp;
+import com.example.mealsapp.ui.main.fragments.search_fragment.presenter.SearchView;
+import com.example.mealsapp.ui.main.fragments.search_fragment.repo.SearchRepoImp;
 import com.example.mealsapp.utils.AppSnackbar;
 import com.example.mealsapp.utils.SnackType;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements SearchView {
 
-    TextInputEditText etSearch;
-    RecyclerView rvResults;
-    ImageView imgPlaceholder, imgEmpty;
-    LinearLayout layoutEmpty;
+    private TextInputEditText etSearch;
+    private RecyclerView rvResults;
+    private ImageView imgPlaceholder, imgEmpty;
+    private LinearLayout layoutEmpty;
+    private ChipGroup chipGroup;
 
-    MealsAdapter mealsAdapter;
-    List<Meal> mealsList = new ArrayList<>();
+    private MealsAdapter mealsAdapter;
+    private final List<Meal> mealsList = new ArrayList<>();
 
-    ChipGroup chipGroup;
-    String selectedFilter = "";
+    private String selectedFilter = "";
+
+    private SearchPresenter presenter;
 
     @Nullable
     @Override
@@ -53,9 +50,9 @@ public class SearchFragment extends Fragment {
             @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState
     ) {
+
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        // Views
         etSearch = view.findViewById(R.id.etSearchQuery);
         rvResults = view.findViewById(R.id.rvSearchResults);
         imgPlaceholder = view.findViewById(R.id.imgSearchPlaceholder);
@@ -64,27 +61,21 @@ public class SearchFragment extends Fragment {
         chipGroup = view.findViewById(R.id.chipGroupFilter);
         TextInputLayout tilSearch = view.findViewById(R.id.tilSearch);
 
-        // RecyclerView
+        presenter = new SearchPresenterImp(this, new SearchRepoImp());
+
         rvResults.setLayoutManager(new GridLayoutManager(getContext(), 2));
         mealsAdapter = new MealsAdapter(getContext(), mealsList);
         rvResults.setAdapter(mealsAdapter);
+
         etSearch.setOnClickListener(v -> {
             if (selectedFilter.isEmpty()) {
-                AppSnackbar.show(
-                        v,
-                        "Please select a filter first",
-                        SnackType.INFO
-                );
+                AppSnackbar.show(v, "Please select a filter first", SnackType.INFO);
             }
         });
 
-
-        // Chips
         chipGroup.setOnCheckedChangeListener((group, checkedId) -> {
 
-            rvResults.setVisibility(View.GONE);
-            imgPlaceholder.setVisibility(View.VISIBLE);
-            layoutEmpty.setVisibility(View.GONE);
+            resetUI();
 
             if (checkedId == View.NO_ID) {
                 selectedFilter = "";
@@ -93,7 +84,6 @@ public class SearchFragment extends Fragment {
                 return;
             }
 
-            // Chip selected → enable input
             enableSearchInput();
 
             if (checkedId == R.id.chipCountry) {
@@ -108,70 +98,38 @@ public class SearchFragment extends Fragment {
             }
         });
 
-
-
-        // Search action
         etSearch.setOnEditorActionListener((v, actionId, event) -> {
-            performSearch();
+            presenter.search(selectedFilter, etSearch.getText().toString().trim());
             return true;
         });
 
         return view;
     }
 
-    private void performSearch() {
-        String query = etSearch.getText().toString().trim();
-        if (query.isEmpty() || selectedFilter.isEmpty()) return;
+    @Override
+    public void showResults(List<Meal> meals) {
+        mealsList.clear();
+        mealsList.addAll(meals);
+        mealsAdapter.notifyDataSetChanged();
 
-        Call<MealsResponse> call = null;
-
-        switch (selectedFilter) {
-            case "Category":
-                call = RetrofitClient.getApi().getMealsByCategory(query);
-                break;
-            case "Country":
-                call = RetrofitClient.getApi().filterByArea(query);
-                break;
-            case "Ingredient":
-                call = RetrofitClient.getApi().filterByIngredient(query);
-                break;
-        }
-
-        if (call == null) return;
-
-        call.enqueue(new Callback<MealsResponse>() {
-            @Override
-            public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
-                mealsList.clear();
-
-                if (response.isSuccessful()
-                        && response.body() != null
-                        && response.body().getMeals() != null) {
-
-                    mealsList.addAll(response.body().getMeals());
-
-                    rvResults.setVisibility(View.VISIBLE);
-                    imgPlaceholder.setVisibility(View.GONE);
-                    layoutEmpty.setVisibility(View.GONE);
-                } else {
-                    showEmpty();
-                }
-
-                mealsAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<MealsResponse> call, Throwable t) {
-                showEmpty();
-            }
-        });
+        rvResults.setVisibility(View.VISIBLE);
+        imgPlaceholder.setVisibility(View.GONE);
+        layoutEmpty.setVisibility(View.GONE);
     }
 
-    private void showEmpty() {
+    @Override
+    public void showEmpty() {
         rvResults.setVisibility(View.GONE);
         imgPlaceholder.setVisibility(View.GONE);
         layoutEmpty.setVisibility(View.VISIBLE);
     }
+
+    private void resetUI() {
+        rvResults.setVisibility(View.GONE);
+        imgPlaceholder.setVisibility(View.VISIBLE);
+        layoutEmpty.setVisibility(View.GONE);
+    }
+
     private void enableSearchInput() {
         etSearch.setFocusable(true);
         etSearch.setFocusableInTouchMode(true);
@@ -180,11 +138,16 @@ public class SearchFragment extends Fragment {
     }
 
     private void disableSearchInput() {
-        etSearch.setText(""); // optional UX
+        etSearch.setText("");
         etSearch.setFocusable(false);
         etSearch.setFocusableInTouchMode(false);
         etSearch.setCursorVisible(false);
         etSearch.setInputType(InputType.TYPE_NULL);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        presenter.onDestroy();
+    }
 }
