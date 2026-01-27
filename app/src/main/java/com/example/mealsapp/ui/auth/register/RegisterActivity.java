@@ -2,31 +2,27 @@ package com.example.mealsapp.ui.auth.register;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.Button;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.mealsapp.R;
+import com.example.mealsapp.ui.auth.register.presenter.RegisterPresenter;
+import com.example.mealsapp.ui.auth.register.presenter.RegisterPresenterImp;
+import com.example.mealsapp.ui.auth.register.presenter.RegisterView;
+import com.example.mealsapp.ui.auth.register.repo.RegisterRepoImp;
 import com.example.mealsapp.ui.main.MainActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements RegisterView {
 
-    EditText etName, etEmail, etPassword;
-    Button btnRegister;
-    ProgressBar progressBar;
+    private EditText etName, etEmail, etPassword;
+    private Button btnRegister;
+    private ProgressBar progressBar;
 
-    FirebaseAuth auth;
-    FirebaseFirestore db;
+    private RegisterPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,59 +35,46 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.btnRegister);
         progressBar = findViewById(R.id.progressBar);
 
-        auth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
+        presenter = new RegisterPresenterImp(this, new RegisterRepoImp());
 
-        btnRegister.setOnClickListener(v -> registerUser());
+        btnRegister.setOnClickListener(v ->
+                presenter.register(
+                        etName.getText().toString().trim(),
+                        etEmail.getText().toString().trim(),
+                        etPassword.getText().toString().trim()
+                )
+        );
     }
 
-    private void registerUser() {
-        String name = etName.getText().toString().trim();
-        String email = etEmail.getText().toString().trim();
-        String password = etPassword.getText().toString().trim();
+    @Override
+    public void showLoading() {
+        progressBar.setVisibility(android.view.View.VISIBLE);
+    }
 
-        if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "All fields required", Toast.LENGTH_SHORT).show();
-            return;
-        }
+    @Override
+    public void hideLoading() {
+        progressBar.setVisibility(android.view.View.GONE);
+    }
 
-        progressBar.setVisibility(View.VISIBLE);
+    @Override
+    public void showError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void enableRegisterButton() {
+        btnRegister.setEnabled(true);
+    }
+
+    @Override
+    public void disableRegisterButton() {
         btnRegister.setEnabled(false);
+    }
 
-        auth.createUserWithEmailAndPassword(email, password)
-                .addOnSuccessListener(result -> {
-                    FirebaseUser firebaseUser = auth.getCurrentUser();
-                    if (firebaseUser == null) {
-                        progressBar.setVisibility(View.GONE);
-                        btnRegister.setEnabled(true);
-                        return;
-                    }
-
-                    String uid = firebaseUser.getUid();
-
-                    Map<String, Object> user = new HashMap<>();
-                    user.put("uid", uid);
-                    user.put("name", name);
-                    user.put("email", email);
-
-                    db.collection("users")
-                            .document(uid)
-                            .set(user)
-                            .addOnSuccessListener(unused -> {
-                                progressBar.setVisibility(View.GONE);
-                                startActivity(new Intent(this, MainActivity.class));
-                                finish();
-                            })
-                            .addOnFailureListener(e -> {
-                                progressBar.setVisibility(View.GONE);
-                                btnRegister.setEnabled(true);
-                                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-                            });
-                })
-                .addOnFailureListener(e -> {
-                    progressBar.setVisibility(View.GONE);
-                    btnRegister.setEnabled(true);
-                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-                });
+    @Override
+    public void navigateToMain() {
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 }
+
