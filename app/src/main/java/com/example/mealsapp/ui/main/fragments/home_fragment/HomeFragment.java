@@ -20,7 +20,7 @@ import com.example.mealsapp.data.model.Meal;
 import com.example.mealsapp.ui.main.CategoryMealsActivity;
 import com.example.mealsapp.ui.main.MealDetailsActivity;
 import com.example.mealsapp.ui.main.adapters.CategoryAdapter;
-import com.example.mealsapp.ui.main.fragments.SearchFragment;
+import com.example.mealsapp.ui.main.fragments.search_fragment.SearchFragment;
 import com.example.mealsapp.ui.main.fragments.home_fragment.presenter.HomeContract;
 import com.example.mealsapp.ui.main.fragments.home_fragment.presenter.HomePresenterImp;
 import com.example.mealsapp.ui.main.fragments.home_fragment.repo.HomeRepoImp;
