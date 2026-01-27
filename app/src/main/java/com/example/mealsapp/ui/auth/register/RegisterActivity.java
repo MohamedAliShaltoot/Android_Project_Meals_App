@@ -1,4 +1,4 @@
-package com.example.mealsapp.ui.auth;
+package com.example.mealsapp.ui.auth.register;
 
 import android.content.Intent;
 import android.os.Bundle;
