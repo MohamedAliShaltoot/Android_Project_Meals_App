@@ -14,6 +14,10 @@ import com.example.mealsapp.R;
 import com.example.mealsapp.data.database.localDatabase.FavoriteMeal;
 import com.example.mealsapp.data.database.localDatabase.MealsDatabase;
 import com.example.mealsapp.ui.main.adapters.FavoritesAdapter;
+import com.example.mealsapp.ui.main.fragments.fav_fragment.presenter.FavoritesPresenter;
+import com.example.mealsapp.ui.main.fragments.fav_fragment.presenter.FavoritesPresenterImpl;
+import com.example.mealsapp.ui.main.fragments.fav_fragment.presenter.FavoritesView;
+import com.example.mealsapp.ui.main.fragments.fav_fragment.repo.FavoritesRepositoryImpl;
 import com.example.mealsapp.utils.AppSnackbar;
 import com.example.mealsapp.utils.SnackType;
 

@@ -1,10 +1,9 @@
-package com.example.mealsapp.ui.main.fragments.fav_fragment;
+package com.example.mealsapp.ui.main.fragments.fav_fragment.presenter;
 
 
 
-import androidx.lifecycle.LifecycleOwner;
 import com.example.mealsapp.data.database.localDatabase.FavoriteMeal;
-import java.util.List;
+import com.example.mealsapp.ui.main.fragments.fav_fragment.repo.FavoritesRepository;
 
 public class FavoritesPresenterImpl implements FavoritesPresenter {
 

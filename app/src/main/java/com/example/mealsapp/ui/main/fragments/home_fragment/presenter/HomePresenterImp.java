@@ -1,7 +1,9 @@
-package com.example.mealsapp.ui.main.fragments.home_fragment;
+package com.example.mealsapp.ui.main.fragments.home_fragment.presenter;
 
 import com.example.mealsapp.data.model.CategoriesResponse;
 import com.example.mealsapp.data.model.MealsResponse;
+import com.example.mealsapp.ui.main.fragments.home_fragment.repo.HomeRepo;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

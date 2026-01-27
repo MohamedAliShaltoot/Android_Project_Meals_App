@@ -1,4 +1,4 @@
-package com.example.mealsapp.ui.main.fragments.fav_fragment;
+package com.example.mealsapp.ui.main.fragments.fav_fragment.presenter;
 
 import com.example.mealsapp.data.database.localDatabase.FavoriteMeal;
 import java.util.List;
