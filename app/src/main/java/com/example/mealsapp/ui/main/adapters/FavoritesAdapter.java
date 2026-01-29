@@ -1,23 +1,19 @@
 package com.example.mealsapp.ui.main.adapters;
 
-import android.content.Context;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.example.mealsapp.R;
 import com.example.mealsapp.data.database.localDatabase.FavoriteMeal;
 import com.example.mealsapp.utils.AppSnackbar;
 import com.example.mealsapp.utils.SnackType;
-
-
 import java.util.ArrayList;
 import java.util.List;
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {

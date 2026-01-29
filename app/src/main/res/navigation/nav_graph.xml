@@ -62,7 +62,7 @@
     <!-- FAVORITES -->
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.example.mealsapp.ui.main.fragments.fav_fragment.Favoritessfragment"/>
+        android:name="com.example.mealsapp.ui.main.fragments.fav_fragment.Favouritesfragment"/>
 
     <!-- PROFILE -->
     <fragment

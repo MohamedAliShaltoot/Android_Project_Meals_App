@@ -21,7 +21,6 @@ public abstract class MealsDatabase extends RoomDatabase {
                             "meals_db"
                     )
                     .fallbackToDestructiveMigration()
-                    .allowMainThreadQueries()
                     .build();
 
         }

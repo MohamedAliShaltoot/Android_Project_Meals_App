@@ -11,6 +11,7 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.mealsapp.R;
 import com.example.mealsapp.ui.auth.login.LoginActivity;
 import com.example.mealsapp.ui.main.MainActivity;
+import com.example.mealsapp.utils.NetworkUtils;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class SplashActivity extends AppCompatActivity {
@@ -25,7 +26,6 @@ public class SplashActivity extends AppCompatActivity {
         LottieAnimationView lottie = findViewById(R.id.lottieSplash);
         lottie.playAnimation();
         FirebaseAuth auth = FirebaseAuth.getInstance();
-
         new Handler(Looper.getMainLooper()).postDelayed(() -> {
 
             if (auth.getCurrentUser() == null) {
@@ -34,21 +34,27 @@ public class SplashActivity extends AppCompatActivity {
                 return;
             }
 
+            if (!NetworkUtils.isInternetAvailable(this)) {
+                startActivity(new Intent(this, MainActivity.class));
+                finish();
+                return;
+            }
+
+
             auth.getCurrentUser()
                     .reload()
                     .addOnSuccessListener(unused -> {
-                        // User still exists
                         startActivity(new Intent(this, MainActivity.class));
                         finish();
                     })
                     .addOnFailureListener(e -> {
-                        // User deleted from Firebase Console
                         auth.signOut();
                         startActivity(new Intent(this, LoginActivity.class));
                         finish();
                     });
 
         }, SPLASH_DURATION);
+
 
 
     }

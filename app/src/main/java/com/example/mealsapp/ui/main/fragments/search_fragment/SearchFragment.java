@@ -13,9 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.mealsapp.R;
 import com.example.mealsapp.data.model.Meal;
-import com.example.mealsapp.ui.main.MealDetailsFragment;
 import com.example.mealsapp.ui.main.adapters.MealsAdapter;
 import com.example.mealsapp.ui.main.fragments.search_fragment.presenter.SearchPresenter;
 import com.example.mealsapp.ui.main.fragments.search_fragment.presenter.SearchPresenterImp;
@@ -29,6 +30,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+
 
 public class SearchFragment extends Fragment implements SearchView {
 
@@ -37,12 +40,13 @@ public class SearchFragment extends Fragment implements SearchView {
     private ImageView imgPlaceholder, imgEmpty;
     private LinearLayout layoutEmpty;
     private ChipGroup chipGroup;
+    private LottieAnimationView lottieEmpty;
 
     private MealsAdapter mealsAdapter;
     private final List<Meal> mealsList = new ArrayList<>();
 
     private String selectedFilter = "";
-
+    private final CompositeDisposable uiDisposable = new CompositeDisposable();
     private SearchPresenter presenter;
 
     @Nullable
@@ -55,37 +59,41 @@ public class SearchFragment extends Fragment implements SearchView {
 
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
+
         etSearch = view.findViewById(R.id.etSearchQuery);
         rvResults = view.findViewById(R.id.rvSearchResults);
         imgPlaceholder = view.findViewById(R.id.imgSearchPlaceholder);
         layoutEmpty = view.findViewById(R.id.layoutEmpty);
-        imgEmpty = view.findViewById(R.id.imgEmpty);
+        lottieEmpty = view.findViewById(R.id.lottieEmpty);
         chipGroup = view.findViewById(R.id.chipGroupFilter);
         TextInputLayout tilSearch = view.findViewById(R.id.tilSearch);
 
         presenter = new SearchPresenterImp(this, new SearchRepoImp());
+        uiDisposable.add(
+                com.jakewharton.rxbinding4.widget.RxTextView.textChanges(etSearch)
+                        .skipInitialValue()
+                        .map(CharSequence::toString)
+                        .map(String::trim)
+                        .debounce(600, java.util.concurrent.TimeUnit.MILLISECONDS)
+                        .distinctUntilChanged()
+                        .filter(query -> !query.isEmpty())
+                        .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
+                        .subscribe(query -> {
+                            if (selectedFilter.isEmpty()) {
+                                AppSnackbar.show(
+                                        etSearch,
+                                        "Please select a filter first",
+                                        SnackType.INFO
+                                );
+                                return;
+                            }
+
+                            presenter.search(selectedFilter, query);
+                        })
+        );
 
         rvResults.setLayoutManager(new GridLayoutManager(getContext(), 2));
-      //  mealsAdapter = new MealsAdapter(getContext(), mealsList);
-//        mealsAdapter = new MealsAdapter(
-//                mealsList,
-//                mealId -> {
-//
-//                    MealDetailsFragment fragment =
-//                            new MealDetailsFragment();
-//
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("meal_id", mealId);
-//                    fragment.setArguments(bundle);
-//
-//                    requireActivity()
-//                            .getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.container, fragment)
-//                            .addToBackStack(null)
-//                            .commit();
-//                }
-//        );
+
         mealsAdapter = new MealsAdapter(
                 mealsList,
                 mealId -> {
@@ -131,31 +139,37 @@ public class SearchFragment extends Fragment implements SearchView {
             }
         });
 
-        etSearch.setOnEditorActionListener((v, actionId, event) -> {
-            presenter.search(selectedFilter, etSearch.getText().toString().trim());
-            return true;
-        });
+//        etSearch.setOnEditorActionListener((v, actionId, event) -> {
+//            presenter.search(selectedFilter, etSearch.getText().toString().trim());
+//            return true;
+//        });
 
         return view;
     }
 
-    @Override
-    public void showResults(List<Meal> meals) {
-        mealsList.clear();
-        mealsList.addAll(meals);
-        mealsAdapter.notifyDataSetChanged();
+@Override
+public void showResults(List<Meal> meals) {
+    mealsList.clear();
+    mealsList.addAll(meals);
+    mealsAdapter.notifyDataSetChanged();
 
-        rvResults.setVisibility(View.VISIBLE);
-        imgPlaceholder.setVisibility(View.GONE);
-        layoutEmpty.setVisibility(View.GONE);
-    }
+    rvResults.setVisibility(View.VISIBLE);
+    imgPlaceholder.setVisibility(View.GONE);
+    layoutEmpty.setVisibility(View.GONE);
 
-    @Override
-    public void showEmpty() {
-        rvResults.setVisibility(View.GONE);
-        imgPlaceholder.setVisibility(View.GONE);
-        layoutEmpty.setVisibility(View.VISIBLE);
-    }
+    lottieEmpty.cancelAnimation();
+}
+
+
+@Override
+public void showEmpty() {
+    rvResults.setVisibility(View.GONE);
+    imgPlaceholder.setVisibility(View.GONE);
+    layoutEmpty.setVisibility(View.VISIBLE);
+
+    lottieEmpty.playAnimation();
+}
+
 
     private void resetUI() {
         rvResults.setVisibility(View.GONE);
@@ -178,9 +192,16 @@ public class SearchFragment extends Fragment implements SearchView {
         etSearch.setInputType(InputType.TYPE_NULL);
     }
 
+//    @Override
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        presenter.onDestroy();
+//    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        uiDisposable.clear();
         presenter.onDestroy();
     }
+
 }

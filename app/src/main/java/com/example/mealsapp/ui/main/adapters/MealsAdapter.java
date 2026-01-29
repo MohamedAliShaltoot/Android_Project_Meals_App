@@ -1,19 +1,13 @@
 package com.example.mealsapp.ui.main.adapters;
-import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.bumptech.glide.Glide;
 import com.example.mealsapp.R;
 import com.example.mealsapp.data.model.Meal;
-import com.example.mealsapp.ui.main.MealDetailsFragment;
-
 import org.jspecify.annotations.NonNull;
 
 import java.util.List;
