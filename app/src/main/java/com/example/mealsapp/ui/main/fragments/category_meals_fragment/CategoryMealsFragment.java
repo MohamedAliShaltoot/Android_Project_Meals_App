@@ -1,4 +1,4 @@
-package com.example.mealsapp.ui.main;
+package com.example.mealsapp.ui.main.fragments.category_meals_fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,22 +11,23 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mealsapp.R;
 import com.example.mealsapp.data.model.Meal;
-import com.example.mealsapp.data.network.RetrofitClient;
 import com.example.mealsapp.ui.main.adapters.MealsAdapter;
+import com.example.mealsapp.ui.main.fragments.category_meals_fragment.presenter.CategoryMealsContract;
+import com.example.mealsapp.ui.main.fragments.category_meals_fragment.presenter.CategoryMealsPresenterImpl;
+import com.example.mealsapp.ui.main.fragments.category_meals_fragment.repo.CategoryMealsRepoImpl;
+
 import java.util.ArrayList;
 import java.util.List;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class CategoryMealsFragment extends Fragment {
 
-    RecyclerView rvMeals;
-    MealsAdapter mealsAdapter;
-    List<Meal> mealsList = new ArrayList<>();
+public class CategoryMealsFragment extends Fragment
+        implements CategoryMealsContract.View {
+
+    private RecyclerView rvMeals;
+    private MealsAdapter mealsAdapter;
+    private final List<Meal> mealsList = new ArrayList<>();
     private NavController navController;
-    private String categoryName;
-    private CompositeDisposable disposable = new CompositeDisposable();
+    private CategoryMealsContract.Presenter presenter;
 
     @Override
     public View onCreateView(
@@ -40,11 +41,12 @@ public class CategoryMealsFragment extends Fragment {
                 container,
                 false
         );
+
         navController = NavHostFragment.findNavController(this);
+
         CategoryMealsFragmentArgs args =
                 CategoryMealsFragmentArgs.fromBundle(getArguments());
-
-         categoryName = args.getCategory();
+        String categoryName = args.getCategory();
 
         rvMeals = view.findViewById(R.id.rvMeals);
         rvMeals.setLayoutManager(
@@ -54,49 +56,46 @@ public class CategoryMealsFragment extends Fragment {
         mealsAdapter = new MealsAdapter(
                 mealsList,
                 mealId -> {
-                    // SafeArgs Navigation
                     CategoryMealsFragmentDirections
                             .ActionCategoryMealsFragmentToMealDetailsFragment action =
                             CategoryMealsFragmentDirections
                                     .actionCategoryMealsFragmentToMealDetailsFragment(mealId);
 
                     navController.navigate(action);
-
                 }
         );
 
         rvMeals.setAdapter(mealsAdapter);
 
+        presenter = new CategoryMealsPresenterImpl(
+                this,
+                new CategoryMealsRepoImpl()
+        );
+
         if (categoryName != null) {
-            loadMealsByCategory(categoryName);
+            presenter.loadMeals(categoryName);
         }
 
         return view;
     }
 
-private void loadMealsByCategory(String category) {
-    disposable.add(
-            RetrofitClient.getApi()
-                    .getMealsByCategory(category)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            response -> {
-                                if (response.getMeals() != null) {
-                                    mealsList.clear();
-                                    mealsList.addAll(response.getMeals());
-                                    mealsAdapter.notifyDataSetChanged();
-                                }
-                            },
-                            Throwable::printStackTrace
-                    )
-    );
-}
+    @Override
+    public void showMeals(List<Meal> meals) {
+        mealsList.clear();
+        mealsList.addAll(meals);
+        mealsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        disposable.clear();
+        presenter.clear();
     }
-
 }
+
 
