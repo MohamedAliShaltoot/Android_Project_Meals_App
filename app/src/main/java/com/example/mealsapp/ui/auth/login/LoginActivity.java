@@ -75,9 +75,13 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     public void showError(String message) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
+    private void saveUserName() {
+        com.example.mealsapp.utils.UserSession.saveUser(this);
+    }
 
     @Override
     public void navigateToMain() {
+        saveUserName();
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }

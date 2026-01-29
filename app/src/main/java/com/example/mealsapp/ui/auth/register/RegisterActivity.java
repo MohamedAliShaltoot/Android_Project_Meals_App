@@ -70,9 +70,13 @@ public class RegisterActivity extends AppCompatActivity implements RegisterView 
     public void disableRegisterButton() {
         btnRegister.setEnabled(false);
     }
+    private void saveUserName() {
+        com.example.mealsapp.utils.UserSession.saveUser(this);
+    }
 
     @Override
     public void navigateToMain() {
+        saveUserName();
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }
