@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.mealsapp.R;
 import com.example.mealsapp.data.model.Meal;
-import com.example.mealsapp.ui.main.MealDetailsActivity;
+import com.example.mealsapp.ui.main.MealDetailsFragment;
 
 import org.jspecify.annotations.NonNull;
 
@@ -20,37 +20,80 @@ import java.util.List;
 public class MealsAdapter
         extends RecyclerView.Adapter<MealsAdapter.MealViewHolder> {
 
-    private Context context;
+//    private Context context;
+//    private List<Meal> meals;
+//
+//    public MealsAdapter(Context context, List<Meal> meals) {
+//        this.context = context;
+//        this.meals = meals;
+//    }
+public interface OnMealClickListener {
+    void onMealClick(String mealId);
+}
+
     private List<Meal> meals;
+    private OnMealClickListener listener;
 
-    public MealsAdapter(Context context, List<Meal> meals) {
-        this.context = context;
+    public MealsAdapter(
+            List<Meal> meals,
+            OnMealClickListener listener
+    ) {
         this.meals = meals;
+        this.listener = listener;
     }
 
-    @NonNull
-    @Override
-    public MealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context)
-                .inflate(R.layout.item_meal, parent, false);
-        return new MealViewHolder(view);
-    }
+//    @NonNull
+//    @Override
+//    public MealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//        View view = LayoutInflater.from(context)
+//                .inflate(R.layout.item_meal, parent, false);
+//        return new MealViewHolder(view);
+//    }
+@NonNull
+@Override
+public MealViewHolder onCreateViewHolder(
+        @NonNull ViewGroup parent,
+        int viewType
+) {
+    View view = LayoutInflater.from(parent.getContext())
+            .inflate(R.layout.item_meal, parent, false);
+    return new MealViewHolder(view);
+}
 
-    @Override
-    public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
-        Meal meal = meals.get(position);
 
-        holder.tvMealName.setText(meal.getStrMeal());
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, MealDetailsActivity.class);
-            intent.putExtra("meal_id", meal.getIdMeal());
-            context.startActivity(intent);
-        });
+//    @Override
+//    public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
+//        Meal meal = meals.get(position);
+//
+//        holder.tvMealName.setText(meal.getStrMeal());
+//        holder.itemView.setOnClickListener(v -> {
+//            Intent intent = new Intent(context, MealDetailsFragment.class);
+//            intent.putExtra("meal_id", meal.getIdMeal());
+//            context.startActivity(intent);
+//        });
+//
+//        Glide.with(context)
+//                .load(meal.getStrMealThumb())
+//                .into(holder.imgMeal);
+//    }
+@Override
+public void onBindViewHolder(
+        @NonNull MealViewHolder holder,
+        int position
+) {
+    Meal meal = meals.get(position);
 
-        Glide.with(context)
-                .load(meal.getStrMealThumb())
-                .into(holder.imgMeal);
-    }
+    holder.tvMealName.setText(meal.getStrMeal());
+
+    holder.itemView.setOnClickListener(v ->
+            listener.onMealClick(meal.getIdMeal())
+    );
+
+    Glide.with(holder.itemView)
+            .load(meal.getStrMealThumb())
+            .into(holder.imgMeal);
+}
+
 
     @Override
     public int getItemCount() {

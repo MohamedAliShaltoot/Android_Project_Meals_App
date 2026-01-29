@@ -36,10 +36,10 @@
             android:name=".ui.auth.register.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.CategoryMealsActivity"
+            android:name=".ui.main.CategoryMealsFragment"
             android:exported="false" />
         <activity
-            android:name=".ui.main.MealDetailsActivity"
+            android:name=".ui.main.MealDetailsFragment"
             android:exported="false" />
     </application>
 

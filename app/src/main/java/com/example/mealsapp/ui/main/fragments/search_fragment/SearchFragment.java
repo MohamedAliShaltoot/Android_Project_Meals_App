@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mealsapp.R;
 import com.example.mealsapp.data.model.Meal;
+import com.example.mealsapp.ui.main.MealDetailsFragment;
 import com.example.mealsapp.ui.main.adapters.MealsAdapter;
 import com.example.mealsapp.ui.main.fragments.search_fragment.presenter.SearchPresenter;
 import com.example.mealsapp.ui.main.fragments.search_fragment.presenter.SearchPresenterImp;
@@ -64,7 +65,27 @@ public class SearchFragment extends Fragment implements SearchView {
         presenter = new SearchPresenterImp(this, new SearchRepoImp());
 
         rvResults.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        mealsAdapter = new MealsAdapter(getContext(), mealsList);
+      //  mealsAdapter = new MealsAdapter(getContext(), mealsList);
+        mealsAdapter = new MealsAdapter(
+                mealsList,
+                mealId -> {
+
+                    MealDetailsFragment fragment =
+                            new MealDetailsFragment();
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("meal_id", mealId);
+                    fragment.setArguments(bundle);
+
+                    requireActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.container, fragment)
+                            .addToBackStack(null)
+                            .commit();
+                }
+        );
+
         rvResults.setAdapter(mealsAdapter);
 
         etSearch.setOnClickListener(v -> {

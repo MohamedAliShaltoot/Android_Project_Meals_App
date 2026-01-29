@@ -17,8 +17,8 @@ import com.bumptech.glide.Glide;
 import com.example.mealsapp.R;
 import com.example.mealsapp.data.model.Category;
 import com.example.mealsapp.data.model.Meal;
-import com.example.mealsapp.ui.main.CategoryMealsActivity;
-import com.example.mealsapp.ui.main.MealDetailsActivity;
+import com.example.mealsapp.ui.main.CategoryMealsFragment;
+import com.example.mealsapp.ui.main.MealDetailsFragment;
 import com.example.mealsapp.ui.main.adapters.CategoryAdapter;
 import com.example.mealsapp.ui.main.fragments.search_fragment.SearchFragment;
 import com.example.mealsapp.ui.main.fragments.home_fragment.presenter.HomeContract;
@@ -88,9 +88,22 @@ public class HomeFragment extends Fragment implements HomeContract.View {
                 getContext(),
                 categoryList,
                 categoryName -> {
-                    Intent intent = new Intent(getContext(), CategoryMealsActivity.class);
-                    intent.putExtra("category", categoryName);
-                    startActivity(intent);
+                    CategoryMealsFragment fragment = new CategoryMealsFragment();
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("category", categoryName);
+                    fragment.setArguments(bundle);
+
+                    requireActivity()
+                            .getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.container, fragment)
+                            .addToBackStack(null)
+                            .commit();
+
+//                    Intent intent = new Intent(getContext(), CategoryMealsFragment.class);
+//                    intent.putExtra("category", categoryName);
+//                    startActivity(intent);
                 }
         );
         rvCategories.setAdapter(categoryAdapter);
@@ -99,9 +112,22 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private void setupClicks() {
         cardRandomMeal.setOnClickListener(v -> {
             if (randomMeal != null) {
-                Intent intent = new Intent(getContext(), MealDetailsActivity.class);
-                intent.putExtra("meal_id", randomMeal.getIdMeal());
-                startActivity(intent);
+                MealDetailsFragment fragment = new MealDetailsFragment();
+
+                Bundle bundle = new Bundle();
+                bundle.putString("meal_id", randomMeal.getIdMeal());
+                fragment.setArguments(bundle);
+
+                requireActivity()
+                        .getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.container, fragment)
+                        .addToBackStack(null)
+                        .commit();
+
+//                Intent intent = new Intent(getContext(), MealDetailsFragment.class);
+//                intent.putExtra("meal_id", randomMeal.getIdMeal());
+//                startActivity(intent);
             }
         });
     }
