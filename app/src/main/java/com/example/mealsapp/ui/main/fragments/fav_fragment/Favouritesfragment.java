@@ -44,13 +44,20 @@ public class Favoritessfragment extends Fragment implements FavoritesView {
 
         rvFavorites.setAdapter(adapter);
 
+//        presenter = new FavoritesPresenterImpl(
+//                this,
+//                new FavoritesRepositoryImpl(
+//                        MealsDatabase.getInstance(requireContext()).favoriteMealDao(),
+//                        getViewLifecycleOwner()
+//                )
+//        );
         presenter = new FavoritesPresenterImpl(
                 this,
                 new FavoritesRepositoryImpl(
-                        MealsDatabase.getInstance(requireContext()).favoriteMealDao(),
-                        getViewLifecycleOwner()
+                        MealsDatabase.getInstance(requireContext()).favoriteMealDao()
                 )
         );
+
 
         presenter.loadFavorites();
 
@@ -104,6 +111,13 @@ public class Favoritessfragment extends Fragment implements FavoritesView {
                 };
 
         new ItemTouchHelper(callback).attachToRecyclerView(rvFavorites);
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (presenter instanceof FavoritesPresenterImpl) {
+            ((FavoritesPresenterImpl) presenter).clear();
+        }
     }
 
 }
