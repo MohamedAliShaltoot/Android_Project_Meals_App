@@ -121,11 +121,13 @@
         android:visibility="gone"
         android:layout_marginTop="32dp">
 
-        <ImageView
-            android:id="@+id/imgEmpty"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:src="@drawable/no_result_found"/>
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lottieEmpty"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            app:lottie_rawRes="@raw/no_data_found"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
 
         <TextView
             android:layout_marginTop="12dp"

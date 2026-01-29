@@ -1,14 +1,15 @@
 package com.example.mealsapp.ui.main.fragments.fav_fragment.presenter;
 
-
-
 import com.example.mealsapp.data.database.localDatabase.FavoriteMeal;
 import com.example.mealsapp.ui.main.fragments.fav_fragment.repo.FavoritesRepository;
-
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 public class FavoritesPresenterImpl implements FavoritesPresenter {
 
     private final FavoritesView view;
     private final FavoritesRepository repository;
+    private final CompositeDisposable disposable = new CompositeDisposable();
 
     public FavoritesPresenterImpl(
             FavoritesView view,
@@ -20,15 +21,31 @@ public class FavoritesPresenterImpl implements FavoritesPresenter {
 
     @Override
     public void loadFavorites() {
-        repository.getAllFavorites(meals ->
-                view.showFavorites(meals)
+        disposable.add(
+                repository.getAllFavorites()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                view::showFavorites,
+                                Throwable::printStackTrace
+                        )
         );
     }
 
     @Override
     public void removeFavorite(FavoriteMeal meal) {
-        repository.removeFavorite(meal);
-        view.showRemoveMessage(meal.name);
+        disposable.add(
+                repository.removeFavorite(meal)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                () -> view.showRemoveMessage(meal.name),
+                                Throwable::printStackTrace
+                        )
+        );
+    }
+
+    public void clear() {
+        disposable.clear();
     }
 }
-

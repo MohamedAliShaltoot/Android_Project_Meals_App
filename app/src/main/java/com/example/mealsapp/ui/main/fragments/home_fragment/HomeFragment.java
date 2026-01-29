@@ -1,6 +1,5 @@
 package com.example.mealsapp.ui.main.fragments.home_fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +13,17 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.example.mealsapp.R;
 import com.example.mealsapp.data.model.Category;
 import com.example.mealsapp.data.model.Meal;
-import com.example.mealsapp.ui.main.CategoryMealsFragment;
-import com.example.mealsapp.ui.main.MealDetailsFragment;
 import com.example.mealsapp.ui.main.adapters.CategoryAdapter;
-import com.example.mealsapp.ui.main.fragments.search_fragment.SearchFragment;
 import com.example.mealsapp.ui.main.fragments.home_fragment.presenter.HomeContract;
 import com.example.mealsapp.ui.main.fragments.home_fragment.presenter.HomePresenterImp;
 import com.example.mealsapp.ui.main.fragments.home_fragment.repo.HomeRepoImp;
+import com.example.mealsapp.utils.NetworkUtils;
 import com.google.android.material.card.MaterialCardView;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +35,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private ImageView imgRandomMeal;
     private TextView tvRandomMealName;
     private RecyclerView rvCategories;
+    private LottieAnimationView lottieNoInternet;
 
     private CategoryAdapter categoryAdapter;
     private final List<Category> categoryList = new ArrayList<>();
@@ -58,29 +58,32 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         imgRandomMeal = view.findViewById(R.id.imgRandomMeal);
         tvRandomMealName = view.findViewById(R.id.tvRandomMealName);
         rvCategories = view.findViewById(R.id.rvCategories);
+        lottieNoInternet = view.findViewById(R.id.lottieNoInternet);
+        lottieNoInternet.setOnClickListener(v -> {
+            presenter.getRandomMeal();
+            presenter.getCategories();
+        });
 
         presenter = new HomePresenterImp(this, new HomeRepoImp());
 
         setupSearch();
         setupRecyclerView();
         setupClicks();
+        if (!NetworkUtils.isInternetAvailable(requireContext())) {
+            showNoInternet();
+        } else {
+            presenter.getRandomMeal();
+            presenter.getCategories();
+        }
 
-        presenter.getRandomMeal();
-        presenter.getCategories();
+       // presenter.getRandomMeal();
+       // presenter.getCategories();
 
         return view;
     }
 
     private void setupSearch() {
         etSearch.setFocusable(false);
-//        etSearch.setOnClickListener(v ->
-//                requireActivity()
-//                        .getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.container, new SearchFragment())
-//                        .addToBackStack(null)
-//                        .commit()
-//        );
         etSearch.setOnClickListener(v ->
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_homeFragment_to_searchFragment)
@@ -89,25 +92,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     private void setupRecyclerView() {
         rvCategories.setLayoutManager(new GridLayoutManager(getContext(), 2));
-//        categoryAdapter = new CategoryAdapter(
-//                getContext(),
-//                categoryList,
-//                categoryName -> {
-//                    CategoryMealsFragment fragment = new CategoryMealsFragment();
-//
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("category", categoryName);
-//                    fragment.setArguments(bundle);
-//
-//                    requireActivity()
-//                            .getSupportFragmentManager()
-//                            .beginTransaction()
-//                            .replace(R.id.container, fragment)
-//                            .addToBackStack(null)
-//                            .commit();
-//
-//                }
-//        );
         categoryAdapter = new CategoryAdapter(
                 requireContext(),
                 categoryList,
@@ -124,23 +108,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     }
 
     private void setupClicks() {
-//        cardRandomMeal.setOnClickListener(v -> {
-//            if (randomMeal != null) {
-//                MealDetailsFragment fragment = new MealDetailsFragment();
-//
-//                Bundle bundle = new Bundle();
-//                bundle.putString("meal_id", randomMeal.getIdMeal());
-//                fragment.setArguments(bundle);
-//
-//                requireActivity()
-//                        .getSupportFragmentManager()
-//                        .beginTransaction()
-//                        .replace(R.id.container, fragment)
-//                        .addToBackStack(null)
-//                        .commit();
-//
-//            }
-//        });
         cardRandomMeal.setOnClickListener(v -> {
             if (randomMeal == null) return;
 
@@ -180,4 +147,18 @@ public class HomeFragment extends Fragment implements HomeContract.View {
         super.onDestroyView();
         presenter.onDestroy();
     }
+    @Override
+    public void showNoInternet() {
+        lottieNoInternet.setVisibility(View.VISIBLE);
+        cardRandomMeal.setVisibility(View.GONE);
+        rvCategories.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideNoInternet() {
+        lottieNoInternet.setVisibility(View.GONE);
+        cardRandomMeal.setVisibility(View.VISIBLE);
+        rvCategories.setVisibility(View.VISIBLE);
+    }
+
 }

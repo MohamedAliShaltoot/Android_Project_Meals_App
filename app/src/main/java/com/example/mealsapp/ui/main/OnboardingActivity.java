@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import androidx.viewpager2.widget.ViewPager2;
 import java.util.ArrayList;
 import java.util.List;

@@ -3,65 +3,66 @@ package com.example.mealsapp.ui.main.fragments.home_fragment.presenter;
 import com.example.mealsapp.data.model.CategoriesResponse;
 import com.example.mealsapp.data.model.MealsResponse;
 import com.example.mealsapp.ui.main.fragments.home_fragment.repo.HomeRepo;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class HomePresenterImp implements HomeContract.Presenter {
+    private final HomeContract.View view;
+    private final HomeRepo repo;
+    private final CompositeDisposable disposable = new CompositeDisposable();
 
-    private HomeContract.View view;
-    private HomeRepo repo;
 
     public HomePresenterImp(HomeContract.View view, HomeRepo repo) {
         this.view = view;
         this.repo = repo;
     }
 
-    @Override
-    public void getCategories() {
-        repo.getCategories(new Callback<CategoriesResponse>() {
-            @Override
-            public void onResponse(Call<CategoriesResponse> call, Response<CategoriesResponse> response) {
-                if (view != null && response.isSuccessful() && response.body() != null) {
-                    view.showCategories(response.body().getCategories());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CategoriesResponse> call, Throwable t) {
-                if (view != null) {
-                    view.showError(t.getMessage());
-                }
-            }
-        });
-    }
+@Override
+public void getCategories() {
+    disposable.add(
+            repo.getCategories()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            this::handleCategories,
+                            throwable -> view.showError(throwable.getMessage())
+                    )
+    );
+}
 
     @Override
     public void getRandomMeal() {
-        repo.getRandomMeal(new Callback<MealsResponse>() {
-            @Override
-            public void onResponse(Call<MealsResponse> call, Response<MealsResponse> response) {
-                if (view != null && response.isSuccessful()
-                        && response.body() != null
-                        && response.body().getMeals() != null) {
-
-                    view.showRandomMeal(response.body().getMeals().get(0));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<MealsResponse> call, Throwable t) {
-                if (view != null) {
-                    view.showError(t.getMessage());
-                }
-            }
-        });
+        disposable.add(
+                repo.getRandomMeal()
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                this::handleRandomMeal,
+                                throwable -> view.showError(throwable.getMessage())
+                        )
+        );
+    }
+    private void handleCategories(CategoriesResponse response) {
+        if (response != null && response.getCategories() != null) {
+            view.showCategories(response.getCategories());
+        } else {
+            view.showError("No categories found");
+        }
     }
 
-    @Override
-    public void onDestroy() {
-        view = null;
+    private void handleRandomMeal(MealsResponse response) {
+        if (response != null && response.getMeals() != null && !response.getMeals().isEmpty()) {
+            view.showRandomMeal(response.getMeals().get(0));
+        } else {
+            view.showError("No random meal found");
+        }
     }
+
+@Override
+public void onDestroy() {
+    disposable.clear();
+}
 }
 

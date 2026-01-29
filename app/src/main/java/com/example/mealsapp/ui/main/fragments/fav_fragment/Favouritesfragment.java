@@ -20,10 +20,9 @@ import com.example.mealsapp.ui.main.fragments.fav_fragment.presenter.FavoritesVi
 import com.example.mealsapp.ui.main.fragments.fav_fragment.repo.FavoritesRepositoryImpl;
 import com.example.mealsapp.utils.AppSnackbar;
 import com.example.mealsapp.utils.SnackType;
-
 import java.util.List;
 
-public class Favoritessfragment extends Fragment implements FavoritesView {
+public class Favouritesfragment extends Fragment implements FavoritesView {
 
     RecyclerView rvFavorites;
     FavoritesAdapter adapter;
@@ -33,7 +32,7 @@ public class Favoritessfragment extends Fragment implements FavoritesView {
     @Override
     public View onCreateView( @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_favourite, container, false);
+        View view = inflater.inflate(R.layout.fragment_favourites, container, false);
 
         rvFavorites = view.findViewById(R.id.rvFavorites);
         rvFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -44,13 +43,6 @@ public class Favoritessfragment extends Fragment implements FavoritesView {
 
         rvFavorites.setAdapter(adapter);
 
-//        presenter = new FavoritesPresenterImpl(
-//                this,
-//                new FavoritesRepositoryImpl(
-//                        MealsDatabase.getInstance(requireContext()).favoriteMealDao(),
-//                        getViewLifecycleOwner()
-//                )
-//        );
         presenter = new FavoritesPresenterImpl(
                 this,
                 new FavoritesRepositoryImpl(

@@ -1,17 +1,15 @@
 package com.example.mealsapp.ui.main.fragments.fav_fragment.repo;
 
-
 import com.example.mealsapp.data.database.localDatabase.FavoriteMeal;
 import java.util.List;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
 
 public interface FavoritesRepository {
 
-    void getAllFavorites(FavoritesCallback callback);
+    Flowable<List<FavoriteMeal>> getAllFavorites();
+    Completable removeFavorite(FavoriteMeal meal);
 
-    void removeFavorite(FavoriteMeal meal);
 
-    interface FavoritesCallback {
-        void onResult(List<FavoriteMeal> meals);
-    }
 }
 

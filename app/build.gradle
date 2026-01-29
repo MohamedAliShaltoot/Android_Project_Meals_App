@@ -64,6 +64,14 @@ dependencies {
     def nav_version = "2.7.7"
     implementation ("androidx.navigation:navigation-fragment:$nav_version")
     implementation ("androidx.navigation:navigation-ui:$nav_version")
+    //rx java
+    implementation "io.reactivex.rxjava3:rxjava:3.1.8"
+    implementation "io.reactivex.rxjava3:rxandroid:3.0.2"
+    implementation "androidx.room:room-rxjava3:$room_version"
+    implementation "com.github.akarnokd:rxjava3-retrofit-adapter:3.0.0"
+    implementation "com.jakewharton.rxbinding4:rxbinding-material:4.0.0"
+    implementation "com.jakewharton.rxbinding4:rxbinding-core:4.0.0"
+
 
 
 

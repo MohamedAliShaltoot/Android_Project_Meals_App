@@ -15,7 +15,6 @@ import com.example.mealsapp.R;
 import com.example.mealsapp.data.database.localDatabase.FavoriteMeal;
 import com.example.mealsapp.data.database.localDatabase.MealsDatabase;
 import com.example.mealsapp.data.model.Meal;
-import com.example.mealsapp.data.model.MealsResponse;
 import com.example.mealsapp.data.network.RetrofitClient;
 import com.example.mealsapp.ui.main.adapters.IngredientsAdapter;
 import com.example.mealsapp.utils.AppSnackbar;
@@ -24,10 +23,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import org.jspecify.annotations.NonNull;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
 public class MealDetailsFragment extends Fragment {
 
     ImageView imgMeal;
@@ -39,6 +35,7 @@ public class MealDetailsFragment extends Fragment {
     MealsDatabase db;
     Meal currentMeal;
     boolean isFavorite = false;
+    private CompositeDisposable disposable = new CompositeDisposable();
 
     @Override
     public View onCreateView(
@@ -57,14 +54,6 @@ public class MealDetailsFragment extends Fragment {
                 MealDetailsFragmentArgs.fromBundle(getArguments());
 
          mealId = args.getMealId();
-
-        // Replaces getIntent()
-//        Bundle args = getArguments();
-//        String mealId = null;
-//        if (args != null) {
-//            mealId = args.getString("meal_id");
-//        }
-
         imgMeal = view.findViewById(R.id.imgMeal);
         btnFavorite = view.findViewById(R.id.btnFavorite);
         tvName = view.findViewById(R.id.tvMealName);
@@ -93,84 +82,77 @@ public class MealDetailsFragment extends Fragment {
 
         return view;
     }
-
     private void loadMealDetails(String id) {
-        RetrofitClient.getApi()
-                .getMealDetails(id)
-                .enqueue(new Callback<MealsResponse>() {
-                    @Override
-                    public void onResponse(
-                            Call<MealsResponse> call,
-                            Response<MealsResponse> response
-                    ) {
+        disposable.add(
+                RetrofitClient.getApi()
+                        .getMealDetails(id)
+                        .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                        .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
+                        .subscribe(
+                                response -> {
+                                    if (response.getMeals() == null || response.getMeals().isEmpty()) return;
 
-                        if (response.isSuccessful()
-                                && response.body() != null
-                                && response.body().getMeals() != null) {
+                                    currentMeal = response.getMeals().get(0);
 
-                            currentMeal =
-                                    response.body().getMeals().get(0);
+                                    tvName.setText(currentMeal.getStrMeal());
+                                    tvCountry.setText(
+                                            currentMeal.getStrArea() == null
+                                                    ? "Unknown"
+                                                    : currentMeal.getStrArea()
+                                    );
 
-                            tvName.setText(currentMeal.getStrMeal());
-                            tvCountry.setText(
-                                    currentMeal.getStrArea() == null
-                                            ? "Unknown"
-                                            : currentMeal.getStrArea()
-                            );
+                                    tvSteps.setText(
+                                            currentMeal.getStrInstructions() == null
+                                                    ? "No instructions available"
+                                                    : currentMeal.getStrInstructions()
+                                    );
 
-                            tvSteps.setText(
-                                    currentMeal.getStrInstructions() == null
-                                            ? "No instructions available"
-                                            : currentMeal.getStrInstructions()
-                            );
+                                    Glide.with(requireContext())
+                                            .load(currentMeal.getStrMealThumb())
+                                            .into(imgMeal);
 
-                            Glide.with(requireContext())
-                                    .load(currentMeal.getStrMealThumb())
-                                    .into(imgMeal);
 
-                            isFavorite = db.favoriteMealDao()
-                                    .isFavorite(currentMeal.getIdMeal());
+                                    disposable.add(
+                                            db.favoriteMealDao()
+                                                    .isFavorite(currentMeal.getIdMeal())
+                                                    .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                                                    .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
+                                                    .subscribe(
+                                                            result -> {
+                                                                isFavorite = result;
+                                                                updateFavoriteIcon();
+                                                            },
+                                                            Throwable::printStackTrace
+                                                    )
+                                    );
 
-                            rvIngredients.setAdapter(
-                                    new IngredientsAdapter(
-                                            currentMeal.getIngredientsList()
-                                    )
-                            );
+                                    rvIngredients.setAdapter(
+                                            new IngredientsAdapter(
+                                                    currentMeal.getIngredientsList()
+                                            )
+                                    );
 
-                            String youtubeUrl = currentMeal.getStrYoutube();
-                            if (youtubeUrl != null && !youtubeUrl.isEmpty()) {
-
-                                String videoId =
-                                        youtubeUrl.substring(
-                                                youtubeUrl.lastIndexOf("=") + 1
-                                        );
-
-                                youTubePlayerView
-                                        .addYouTubePlayerListener(
-                                                new AbstractYouTubePlayerListener() {
-                                                    @Override
-                                                    public void onReady(
-                                                            @NonNull YouTubePlayer youTubePlayer
-                                                    ) {
-                                                        youTubePlayer
-                                                                .cueVideo(videoId, 0);
-                                                    }
-                                                }
-                                        );
-                            }
-
-                            updateFavoriteIcon();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(
-                            Call<MealsResponse> call,
-                            Throwable t
-                    ) {
-                    }
-                });
+                                    setupYoutube(currentMeal.getStrYoutube());
+                                },
+                                Throwable::printStackTrace
+                        )
+        );
     }
+    private void setupYoutube(String youtubeUrl) {
+        if (youtubeUrl == null || youtubeUrl.isEmpty()) return;
+
+        String videoId = youtubeUrl.substring(youtubeUrl.lastIndexOf("=") + 1);
+
+        youTubePlayerView.addYouTubePlayerListener(
+                new AbstractYouTubePlayerListener() {
+                    @Override
+                    public void onReady(@NonNull YouTubePlayer youTubePlayer) {
+                        youTubePlayer.cueVideo(videoId, 0);
+                    }
+                }
+        );
+    }
+
 
     private void toggleFavorite() {
         if (currentMeal == null) return;
@@ -182,26 +164,46 @@ public class MealDetailsFragment extends Fragment {
         );
 
         if (isFavorite) {
-            db.favoriteMealDao().delete(fav);
-            AppSnackbar.show(
-                    btnFavorite,
-                    currentMeal.getStrMeal()
-                            + " Removed from favorites",
-                    SnackType.INFO
+            disposable.add(
+                    db.favoriteMealDao()
+                            .delete(fav)
+                            .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                            .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    () -> {
+                                        isFavorite = false;
+                                        updateFavoriteIcon();
+                                        AppSnackbar.show(
+                                                btnFavorite,
+                                                currentMeal.getStrMeal() + " Removed from favorites",
+                                                SnackType.INFO
+                                        );
+                                    },
+                                    Throwable::printStackTrace
+                            )
             );
         } else {
-            db.favoriteMealDao().insert(fav);
-            AppSnackbar.show(
-                    btnFavorite,
-                    currentMeal.getStrMeal()
-                            + " Added to favorites",
-                    SnackType.SUCCESS
+            disposable.add(
+                    db.favoriteMealDao()
+                            .insert(fav)
+                            .subscribeOn(io.reactivex.rxjava3.schedulers.Schedulers.io())
+                            .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
+                            .subscribe(
+                                    () -> {
+                                        isFavorite = true;
+                                        updateFavoriteIcon();
+                                        AppSnackbar.show(
+                                                btnFavorite,
+                                                currentMeal.getStrMeal() + " Added to favorites",
+                                                SnackType.SUCCESS
+                                        );
+                                    },
+                                    Throwable::printStackTrace
+                            )
             );
         }
-
-        isFavorite = !isFavorite;
-        updateFavoriteIcon();
     }
+
 
     private void updateFavoriteIcon() {
         btnFavorite.setImageResource(
@@ -210,4 +212,10 @@ public class MealDetailsFragment extends Fragment {
                         : R.drawable.ic_heart_outline
         );
     }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        disposable.clear();
+    }
+
 }

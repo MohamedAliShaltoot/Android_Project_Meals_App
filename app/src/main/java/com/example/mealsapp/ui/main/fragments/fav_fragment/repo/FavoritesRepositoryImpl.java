@@ -1,30 +1,27 @@
 package com.example.mealsapp.ui.main.fragments.fav_fragment.repo;
 
-import androidx.lifecycle.LifecycleOwner;
+
 import com.example.mealsapp.data.database.localDatabase.FavoriteMeal;
 import com.example.mealsapp.data.database.localDatabase.FavoriteMealDao;
+import java.util.List;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
 
 public class FavoritesRepositoryImpl implements FavoritesRepository {
 
     private final FavoriteMealDao dao;
-    private final LifecycleOwner owner;
 
-    public FavoritesRepositoryImpl(
-            FavoriteMealDao dao,
-            LifecycleOwner owner
-    ) {
+    public FavoritesRepositoryImpl(FavoriteMealDao dao) {
         this.dao = dao;
-        this.owner = owner;
     }
 
     @Override
-    public void getAllFavorites(FavoritesCallback callback) {
-        dao.getAllFavorites().observe(owner, callback::onResult);
+    public Flowable<List<FavoriteMeal>> getAllFavorites() {
+        return dao.getAllFavorites();
     }
 
     @Override
-    public void removeFavorite(FavoriteMeal meal) {
-        dao.delete(meal);
+    public Completable removeFavorite(FavoriteMeal meal) {
+        return dao.delete(meal);
     }
 }
-
