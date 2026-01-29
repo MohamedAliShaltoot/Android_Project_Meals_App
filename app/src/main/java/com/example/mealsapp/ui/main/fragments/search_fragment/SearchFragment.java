@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mealsapp.R;
@@ -66,23 +67,34 @@ public class SearchFragment extends Fragment implements SearchView {
 
         rvResults.setLayoutManager(new GridLayoutManager(getContext(), 2));
       //  mealsAdapter = new MealsAdapter(getContext(), mealsList);
+//        mealsAdapter = new MealsAdapter(
+//                mealsList,
+//                mealId -> {
+//
+//                    MealDetailsFragment fragment =
+//                            new MealDetailsFragment();
+//
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("meal_id", mealId);
+//                    fragment.setArguments(bundle);
+//
+//                    requireActivity()
+//                            .getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.container, fragment)
+//                            .addToBackStack(null)
+//                            .commit();
+//                }
+//        );
         mealsAdapter = new MealsAdapter(
                 mealsList,
                 mealId -> {
+                    SearchFragmentDirections.ActionSearchFragmentToMealDetailsFragment action =
+                            SearchFragmentDirections
+                                    .actionSearchFragmentToMealDetailsFragment(mealId);
 
-                    MealDetailsFragment fragment =
-                            new MealDetailsFragment();
-
-                    Bundle bundle = new Bundle();
-                    bundle.putString("meal_id", mealId);
-                    fragment.setArguments(bundle);
-
-                    requireActivity()
-                            .getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.container, fragment)
-                            .addToBackStack(null)
-                            .commit();
+                    NavHostFragment.findNavController(this)
+                            .navigate(action);
                 }
         );
 

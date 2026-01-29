@@ -35,7 +35,7 @@ public class MealDetailsFragment extends Fragment {
     TextView tvName, tvCountry, tvSteps;
     RecyclerView rvIngredients;
     YouTubePlayerView youTubePlayerView;
-
+    private String mealId;
     MealsDatabase db;
     Meal currentMeal;
     boolean isFavorite = false;
@@ -53,12 +53,17 @@ public class MealDetailsFragment extends Fragment {
                 false
         );
 
+        MealDetailsFragmentArgs args =
+                MealDetailsFragmentArgs.fromBundle(getArguments());
+
+         mealId = args.getMealId();
+
         // Replaces getIntent()
-        Bundle args = getArguments();
-        String mealId = null;
-        if (args != null) {
-            mealId = args.getString("meal_id");
-        }
+//        Bundle args = getArguments();
+//        String mealId = null;
+//        if (args != null) {
+//            mealId = args.getString("meal_id");
+//        }
 
         imgMeal = view.findViewById(R.id.imgMeal);
         btnFavorite = view.findViewById(R.id.btnFavorite);

@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mealsapp.R;
@@ -23,6 +25,8 @@ public class CategoryMealsFragment extends Fragment {
     RecyclerView rvMeals;
     MealsAdapter mealsAdapter;
     List<Meal> mealsList = new ArrayList<>();
+    private NavController navController;
+    private String categoryName;
 
     @Override
     public View onCreateView(
@@ -36,13 +40,19 @@ public class CategoryMealsFragment extends Fragment {
                 container,
                 false
         );
+        navController = NavHostFragment.findNavController(this);
+        CategoryMealsFragmentArgs args =
+                CategoryMealsFragmentArgs.fromBundle(getArguments());
+
+         categoryName = args.getCategory();
+
 
         // Replaces getIntent()
-        Bundle args = getArguments();
-        String categoryName = null;
-        if (args != null) {
-            categoryName = args.getString("category");
-        }
+//        Bundle args = getArguments();
+//        String categoryName = null;
+//        if (args != null) {
+//            categoryName = args.getString("category");
+//        }
 
         rvMeals = view.findViewById(R.id.rvMeals);
         rvMeals.setLayoutManager(
@@ -50,23 +60,36 @@ public class CategoryMealsFragment extends Fragment {
         );
 
        // mealsAdapter = new MealsAdapter(requireContext(), mealsList);
+//        mealsAdapter = new MealsAdapter(
+//                mealsList,
+//                mealId -> {
+//
+//                    MealDetailsFragment fragment =
+//                            new MealDetailsFragment();
+//
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("meal_id", mealId);
+//                    fragment.setArguments(bundle);
+//
+//                    requireActivity()
+//                            .getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.container, fragment)
+//                            .addToBackStack(null)
+//                            .commit();
+//                }
+//        );
         mealsAdapter = new MealsAdapter(
                 mealsList,
                 mealId -> {
+                    // SafeArgs Navigation
+                    CategoryMealsFragmentDirections
+                            .ActionCategoryMealsFragmentToMealDetailsFragment action =
+                            CategoryMealsFragmentDirections
+                                    .actionCategoryMealsFragmentToMealDetailsFragment(mealId);
 
-                    MealDetailsFragment fragment =
-                            new MealDetailsFragment();
+                    navController.navigate(action);
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("meal_id", mealId);
-                    fragment.setArguments(bundle);
-
-                    requireActivity()
-                            .getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.container, fragment)
-                            .addToBackStack(null)
-                            .commit();
                 }
         );
 

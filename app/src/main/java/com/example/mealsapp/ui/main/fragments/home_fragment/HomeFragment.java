@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
@@ -72,63 +73,83 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     private void setupSearch() {
         etSearch.setFocusable(false);
+//        etSearch.setOnClickListener(v ->
+//                requireActivity()
+//                        .getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.container, new SearchFragment())
+//                        .addToBackStack(null)
+//                        .commit()
+//        );
         etSearch.setOnClickListener(v ->
-                requireActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.container, new SearchFragment())
-                        .addToBackStack(null)
-                        .commit()
+                NavHostFragment.findNavController(this)
+                        .navigate(R.id.action_homeFragment_to_searchFragment)
         );
     }
 
     private void setupRecyclerView() {
         rvCategories.setLayoutManager(new GridLayoutManager(getContext(), 2));
+//        categoryAdapter = new CategoryAdapter(
+//                getContext(),
+//                categoryList,
+//                categoryName -> {
+//                    CategoryMealsFragment fragment = new CategoryMealsFragment();
+//
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("category", categoryName);
+//                    fragment.setArguments(bundle);
+//
+//                    requireActivity()
+//                            .getSupportFragmentManager()
+//                            .beginTransaction()
+//                            .replace(R.id.container, fragment)
+//                            .addToBackStack(null)
+//                            .commit();
+//
+//                }
+//        );
         categoryAdapter = new CategoryAdapter(
-                getContext(),
+                requireContext(),
                 categoryList,
                 categoryName -> {
-                    CategoryMealsFragment fragment = new CategoryMealsFragment();
+                    HomeFragmentDirections.ActionHomeFragmentToCategoryMealsFragment action =
+                            HomeFragmentDirections
+                                    .actionHomeFragmentToCategoryMealsFragment(categoryName);
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("category", categoryName);
-                    fragment.setArguments(bundle);
-
-                    requireActivity()
-                            .getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.container, fragment)
-                            .addToBackStack(null)
-                            .commit();
-
-//                    Intent intent = new Intent(getContext(), CategoryMealsFragment.class);
-//                    intent.putExtra("category", categoryName);
-//                    startActivity(intent);
+                    NavHostFragment.findNavController(this)
+                            .navigate(action);
                 }
         );
         rvCategories.setAdapter(categoryAdapter);
     }
 
     private void setupClicks() {
+//        cardRandomMeal.setOnClickListener(v -> {
+//            if (randomMeal != null) {
+//                MealDetailsFragment fragment = new MealDetailsFragment();
+//
+//                Bundle bundle = new Bundle();
+//                bundle.putString("meal_id", randomMeal.getIdMeal());
+//                fragment.setArguments(bundle);
+//
+//                requireActivity()
+//                        .getSupportFragmentManager()
+//                        .beginTransaction()
+//                        .replace(R.id.container, fragment)
+//                        .addToBackStack(null)
+//                        .commit();
+//
+//            }
+//        });
         cardRandomMeal.setOnClickListener(v -> {
-            if (randomMeal != null) {
-                MealDetailsFragment fragment = new MealDetailsFragment();
+            if (randomMeal == null) return;
 
-                Bundle bundle = new Bundle();
-                bundle.putString("meal_id", randomMeal.getIdMeal());
-                fragment.setArguments(bundle);
+            HomeFragmentDirections.ActionHomeFragmentToMealDetailsFragment action =
+                    HomeFragmentDirections
+                            .actionHomeFragmentToMealDetailsFragment(randomMeal.getIdMeal());
 
-                requireActivity()
-                        .getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.container, fragment)
-                        .addToBackStack(null)
-                        .commit();
-
-//                Intent intent = new Intent(getContext(), MealDetailsFragment.class);
-//                intent.putExtra("meal_id", randomMeal.getIdMeal());
-//                startActivity(intent);
-            }
+            NavHostFragment.findNavController(this)
+                    .navigate(action);
         });
     }
 

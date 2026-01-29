@@ -20,13 +20,6 @@ import java.util.List;
 public class MealsAdapter
         extends RecyclerView.Adapter<MealsAdapter.MealViewHolder> {
 
-//    private Context context;
-//    private List<Meal> meals;
-//
-//    public MealsAdapter(Context context, List<Meal> meals) {
-//        this.context = context;
-//        this.meals = meals;
-//    }
 public interface OnMealClickListener {
     void onMealClick(String mealId);
 }
@@ -42,13 +35,6 @@ public interface OnMealClickListener {
         this.listener = listener;
     }
 
-//    @NonNull
-//    @Override
-//    public MealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(context)
-//                .inflate(R.layout.item_meal, parent, false);
-//        return new MealViewHolder(view);
-//    }
 @NonNull
 @Override
 public MealViewHolder onCreateViewHolder(
@@ -59,23 +45,6 @@ public MealViewHolder onCreateViewHolder(
             .inflate(R.layout.item_meal, parent, false);
     return new MealViewHolder(view);
 }
-
-
-//    @Override
-//    public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
-//        Meal meal = meals.get(position);
-//
-//        holder.tvMealName.setText(meal.getStrMeal());
-//        holder.itemView.setOnClickListener(v -> {
-//            Intent intent = new Intent(context, MealDetailsFragment.class);
-//            intent.putExtra("meal_id", meal.getIdMeal());
-//            context.startActivity(intent);
-//        });
-//
-//        Glide.with(context)
-//                .load(meal.getStrMealThumb())
-//                .into(holder.imgMeal);
-//    }
 @Override
 public void onBindViewHolder(
         @NonNull MealViewHolder holder,
