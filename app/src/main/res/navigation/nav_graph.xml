@@ -1,6 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph">
+    android:id="@+id/nav_main"
+    app:startDestination="@id/homeFragment">
+
+    <!-- HOME -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.mealsapp.ui.main.fragments.home_fragment.HomeFragment">
+
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment"/>
+
+        <action
+            android:id="@+id/action_homeFragment_to_categoryMealsFragment"
+            app:destination="@id/categoryMealsFragment"/>
+
+        <action
+            android:id="@+id/action_homeFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment"/>
+    </fragment>
+
+    <!-- SEARCH -->
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.mealsapp.ui.main.fragments.search_fragment.SearchFragment">
+
+        <action
+            android:id="@+id/action_searchFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment"/>
+    </fragment>
+
+    <!-- CATEGORY MEALS -->
+    <fragment
+        android:id="@+id/categoryMealsFragment"
+        android:name="com.example.mealsapp.ui.main.CategoryMealsFragment">
+
+        <argument
+            android:name="category"
+            app:argType="string"
+            app:nullable="false"/>
+
+        <action
+            android:id="@+id/action_categoryMealsFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment"/>
+    </fragment>
+
+    <!-- MEAL DETAILS -->
+    <fragment
+        android:id="@+id/mealDetailsFragment"
+        android:name="com.example.mealsapp.ui.main.MealDetailsFragment">
+
+        <argument
+            android:name="mealId"
+            app:argType="string"
+            app:nullable="false"/>
+    </fragment>
+
+    <!-- FAVORITES -->
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.mealsapp.ui.main.fragments.fav_fragment.Favoritessfragment"/>
+
+    <!-- PROFILE -->
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.mealsapp.ui.main.fragments.profile_fragment.ProfileFragment"/>
 
 </navigation>
