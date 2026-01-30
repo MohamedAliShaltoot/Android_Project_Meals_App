@@ -1,10 +1,7 @@
 package com.example.mealsapp.ui.main.fragments.home_fragment.presenter;
-
-
 import com.example.mealsapp.data.model.Category;
 import com.example.mealsapp.data.model.Meal;
 import java.util.List;
-
 
 public interface HomeContract {
 
@@ -15,7 +12,6 @@ public interface HomeContract {
         void showNoInternet();
         void hideNoInternet();
     }
-
     interface Presenter {
         void getCategories();
        void getRandomMeal();

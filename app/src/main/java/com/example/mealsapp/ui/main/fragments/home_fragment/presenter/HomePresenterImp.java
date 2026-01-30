@@ -1,20 +1,18 @@
 package com.example.mealsapp.ui.main.fragments.home_fragment.presenter;
-
 import com.example.mealsapp.data.model.CategoriesResponse;
 import com.example.mealsapp.data.model.MealsResponse;
-import com.example.mealsapp.ui.main.fragments.home_fragment.repo.HomeRepo;
+import com.example.mealsapp.data.home.HomeRepository;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-
 public class HomePresenterImp implements HomeContract.Presenter {
     private final HomeContract.View view;
-    private final HomeRepo repo;
+    private final HomeRepository repo;
     private final CompositeDisposable disposable = new CompositeDisposable();
 
 
-    public HomePresenterImp(HomeContract.View view, HomeRepo repo) {
+    public HomePresenterImp(HomeContract.View view, HomeRepository repo) {
         this.view = view;
         this.repo = repo;
     }

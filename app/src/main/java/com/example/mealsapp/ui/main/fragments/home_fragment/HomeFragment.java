@@ -22,7 +22,7 @@ import com.example.mealsapp.data.model.Meal;
 import com.example.mealsapp.ui.main.adapters.CategoryAdapter;
 import com.example.mealsapp.ui.main.fragments.home_fragment.presenter.HomeContract;
 import com.example.mealsapp.ui.main.fragments.home_fragment.presenter.HomePresenterImp;
-import com.example.mealsapp.ui.main.fragments.home_fragment.repo.HomeRepoImp;
+import com.example.mealsapp.data.home.HomeRepositoryImpl;
 import com.example.mealsapp.utils.NetworkUtils;
 import com.google.android.material.card.MaterialCardView;
 import java.util.ArrayList;
@@ -36,11 +36,9 @@ public class HomeFragment extends Fragment implements HomeContract.View {
     private TextView tvRandomMealName;
     private RecyclerView rvCategories;
     private LottieAnimationView lottieNoInternet;
-
     private CategoryAdapter categoryAdapter;
     private final List<Category> categoryList = new ArrayList<>();
     private Meal randomMeal;
-
     private HomeContract.Presenter presenter;
 
     @Nullable
@@ -64,8 +62,11 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             presenter.getCategories();
         });
 
-        presenter = new HomePresenterImp(this, new HomeRepoImp());
-
+        //presenter = new HomePresenterImp(this, new HomeRepositoryImpl());
+        presenter = new HomePresenterImp(
+                this,
+                new HomeRepositoryImpl()
+        );
         setupSearch();
         setupRecyclerView();
         setupClicks();

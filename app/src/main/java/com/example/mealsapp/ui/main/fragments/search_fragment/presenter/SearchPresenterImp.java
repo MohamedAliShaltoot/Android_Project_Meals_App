@@ -2,7 +2,7 @@ package com.example.mealsapp.ui.main.fragments.search_fragment.presenter;
 
 import com.example.mealsapp.data.model.Meal;
 import com.example.mealsapp.data.model.MealsResponse;
-import com.example.mealsapp.ui.main.fragments.search_fragment.repo.SearchRepo;
+import com.example.mealsapp.data.search.SearchRepository;
 import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Single;
@@ -12,10 +12,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class SearchPresenterImp implements SearchPresenter {
 
     private SearchView view;
-    private SearchRepo repo;
+    private SearchRepository repo;
     private final CompositeDisposable disposable = new CompositeDisposable();
 
-    public SearchPresenterImp(SearchView view, SearchRepo repo) {
+    public SearchPresenterImp(SearchView view, SearchRepository repo) {
         this.view = view;
         this.repo = repo;
     }
@@ -58,54 +58,6 @@ public class SearchPresenterImp implements SearchPresenter {
         );
     }
 
-//    @Override
-//    public void search(String filter, String query) {
-//        if (query.isEmpty() || filter.isEmpty()) return;
-//
-//        switch (filter) {
-//            case "Category":
-//                disposable.add(
-//                        repo.searchByCategory(query)
-//                                .subscribeOn(Schedulers.io())
-//                                .observeOn(AndroidSchedulers.mainThread())
-//                                .subscribe(
-//                                        this::handleResponse,
-//                                        throwable -> {
-//                                            if (view != null) view.showEmpty();
-//                                        }
-//                                )
-//                );
-//                break;
-//
-//            case "Country":
-//                disposable.add(
-//                        repo.searchByCountry(query)
-//                                .subscribeOn(Schedulers.io())
-//                                .observeOn(AndroidSchedulers.mainThread())
-//                                .subscribe(
-//                                        this::handleResponse,
-//                                        throwable -> {
-//                                            if (view != null) view.showEmpty();
-//                                        }
-//                                )
-//                );
-//                break;
-//
-//            case "Ingredient":
-//                disposable.add(
-//                        repo.searchByIngredient(query)
-//                                .subscribeOn(Schedulers.io())
-//                                .observeOn(AndroidSchedulers.mainThread())
-//                                .subscribe(
-//                                        this::handleResponse,
-//                                        throwable -> {
-//                                            if (view != null) view.showEmpty();
-//                                        }
-//                                )
-//                );
-//                break;
-//        }
-//    }
 
     private void handleResponse(MealsResponse response) {
         if (view == null) return;

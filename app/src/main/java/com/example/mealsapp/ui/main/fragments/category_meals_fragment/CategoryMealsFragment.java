@@ -14,7 +14,7 @@ import com.example.mealsapp.data.model.Meal;
 import com.example.mealsapp.ui.main.adapters.MealsAdapter;
 import com.example.mealsapp.ui.main.fragments.category_meals_fragment.presenter.CategoryMealsContract;
 import com.example.mealsapp.ui.main.fragments.category_meals_fragment.presenter.CategoryMealsPresenterImpl;
-import com.example.mealsapp.ui.main.fragments.category_meals_fragment.repo.CategoryMealsRepoImpl;
+import com.example.mealsapp.data.meals.CategoryMealsRepositoryImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +69,7 @@ public class CategoryMealsFragment extends Fragment
 
         presenter = new CategoryMealsPresenterImpl(
                 this,
-                new CategoryMealsRepoImpl()
+                new CategoryMealsRepositoryImpl()
         );
 
         if (categoryName != null) {

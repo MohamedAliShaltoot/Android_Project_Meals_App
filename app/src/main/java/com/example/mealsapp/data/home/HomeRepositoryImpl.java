@@ -1,0 +1,37 @@
+package com.example.mealsapp.data.home;
+import com.example.mealsapp.data.model.CategoriesResponse;
+import com.example.mealsapp.data.model.MealsResponse;
+import com.example.mealsapp.data.network.RetrofitClient;
+import io.reactivex.rxjava3.core.Single;
+
+//public class HomeRepositoryImpl implements HomeRepository {
+//    @Override
+//    public Single<CategoriesResponse> getCategories() {
+//        return RetrofitClient.getApi().getCategories();
+//    }
+//    @Override
+//    public Single<MealsResponse> getRandomMeal() {
+//        return RetrofitClient.getApi().getRandomMeal();
+//    }
+//}
+import com.example.mealsapp.data.meals.MealsRemoteDataSource;
+
+
+public class HomeRepositoryImpl implements HomeRepository {
+
+    private final MealsRemoteDataSource remote;
+
+    public HomeRepositoryImpl() {
+        this.remote = new MealsRemoteDataSource();
+    }
+
+    @Override
+    public Single<CategoriesResponse> getCategories() {
+        return remote.getCategories();
+    }
+
+    @Override
+    public Single<MealsResponse> getRandomMeal() {
+        return remote.getRandomMeal();
+    }
+}

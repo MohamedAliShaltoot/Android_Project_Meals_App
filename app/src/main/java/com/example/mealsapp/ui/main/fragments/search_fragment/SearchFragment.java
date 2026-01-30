@@ -21,7 +21,7 @@ import com.example.mealsapp.ui.main.adapters.MealsAdapter;
 import com.example.mealsapp.ui.main.fragments.search_fragment.presenter.SearchPresenter;
 import com.example.mealsapp.ui.main.fragments.search_fragment.presenter.SearchPresenterImp;
 import com.example.mealsapp.ui.main.fragments.search_fragment.presenter.SearchView;
-import com.example.mealsapp.ui.main.fragments.search_fragment.repo.SearchRepoImp;
+import com.example.mealsapp.data.search.SearchRepositoryImpl;
 import com.example.mealsapp.utils.AppSnackbar;
 import com.example.mealsapp.utils.SnackType;
 import com.google.android.material.chip.ChipGroup;
@@ -70,7 +70,7 @@ public class SearchFragment extends Fragment implements SearchView {
         chipGroup = view.findViewById(R.id.chipGroupFilter);
         TextInputLayout tilSearch = view.findViewById(R.id.tilSearch);
 
-        presenter = new SearchPresenterImp(this, new SearchRepoImp());
+        presenter = new SearchPresenterImp(this, new SearchRepositoryImpl());
         uiDisposable.add(
                 com.jakewharton.rxbinding4.widget.RxTextView.textChanges(etSearch)
                         .skipInitialValue()
@@ -146,18 +146,6 @@ public class SearchFragment extends Fragment implements SearchView {
         return view;
     }
 
-//@Override
-//public void showResults(List<Meal> meals) {
-//    mealsList.clear();
-//    mealsList.addAll(meals);
-//    mealsAdapter.notifyDataSetChanged();
-//
-//    rvResults.setVisibility(View.VISIBLE);
-//    imgPlaceholder.setVisibility(View.GONE);
-//    layoutEmpty.setVisibility(View.GONE);
-//
-//    lottieEmpty.cancelAnimation();
-//}
     @Override
     public void showResults(List<Meal> meals) {
         mealsList.clear();
@@ -173,16 +161,6 @@ public class SearchFragment extends Fragment implements SearchView {
         lottieEmpty.cancelAnimation();
     }
 
-
-//@Override
-//public void showEmpty() {
-//    rvResults.setVisibility(View.GONE);
-//    imgPlaceholder.setVisibility(View.GONE);
-//    layoutEmpty.setVisibility(View.VISIBLE);
-//
-//    lottieEmpty.playAnimation();
-//}
-
     @Override
     public void showEmpty() {
         rvResults.setVisibility(View.GONE);
@@ -192,13 +170,6 @@ public class SearchFragment extends Fragment implements SearchView {
         lottieEmpty.playAnimation();
     }
 
-
-
-//    private void resetUI() {
-//        rvResults.setVisibility(View.GONE);
-//        imgPlaceholder.setVisibility(View.VISIBLE);
-//        layoutEmpty.setVisibility(View.GONE);
-//    }
     private void resetUI() {
         rvResults.setVisibility(View.GONE);
         layoutEmpty.setVisibility(View.GONE);
