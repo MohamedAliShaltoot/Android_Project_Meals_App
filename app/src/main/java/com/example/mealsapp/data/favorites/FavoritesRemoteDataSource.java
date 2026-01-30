@@ -1,6 +1,6 @@
 package com.example.mealsapp.data.favorites;
 
-import com.example.mealsapp.data.database.localDatabase.FavoriteMeal;
+import com.example.mealsapp.data.database.dao.FavoriteMeal;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;

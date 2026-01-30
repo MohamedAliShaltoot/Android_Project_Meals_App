@@ -2,8 +2,8 @@ package com.example.mealsapp.ui.main.fragments.profile_fragment.presneter;
 
 import android.content.Context;
 
-import com.example.mealsapp.data.database.localDatabase.FavoriteMealDao;
-import com.example.mealsapp.data.database.localDatabase.MealsDatabase;
+import com.example.mealsapp.data.database.dao.FavoriteMealDao;
+import com.example.mealsapp.data.database.MealsDatabase;
 import com.example.mealsapp.ui.main.fragments.profile_fragment.repo.ProfileRepo;
 import com.example.mealsapp.utils.UserSession;
 import com.google.firebase.auth.FirebaseUser;

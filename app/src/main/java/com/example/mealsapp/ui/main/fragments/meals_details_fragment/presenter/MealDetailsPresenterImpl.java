@@ -2,9 +2,9 @@ package com.example.mealsapp.ui.main.fragments.meals_details_fragment.presenter;
 
 import android.content.Context;
 
-import com.example.mealsapp.data.database.localDatabase.FavoriteMeal;
+import com.example.mealsapp.data.database.dao.FavoriteMeal;
 import com.example.mealsapp.data.model.Meal;
-import com.example.mealsapp.ui.main.fragments.meals_details_fragment.repo.MealDetailsRepository;
+import com.example.mealsapp.data.meals.MealDetailsRepository;
 import com.example.mealsapp.utils.SnackType;
 import com.example.mealsapp.utils.UserSession;
 

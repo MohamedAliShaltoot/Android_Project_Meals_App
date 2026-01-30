@@ -1,6 +1,6 @@
-package com.example.mealsapp.ui.main.fragments.meals_details_fragment.repo;
+package com.example.mealsapp.data.meals;
 
-import com.example.mealsapp.data.database.localDatabase.FavoriteMeal;
+import com.example.mealsapp.data.database.dao.FavoriteMeal;
 import com.example.mealsapp.data.model.MealsResponse;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;

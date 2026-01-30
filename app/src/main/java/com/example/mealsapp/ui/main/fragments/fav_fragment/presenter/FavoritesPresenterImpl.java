@@ -1,6 +1,6 @@
 package com.example.mealsapp.ui.main.fragments.fav_fragment.presenter;
 
-import com.example.mealsapp.data.database.localDatabase.FavoriteMeal;
+import com.example.mealsapp.data.database.dao.FavoriteMeal;
 import com.example.mealsapp.data.favorites.FavoritesRepository;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;

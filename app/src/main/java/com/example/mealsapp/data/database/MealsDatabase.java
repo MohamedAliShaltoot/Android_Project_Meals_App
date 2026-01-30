@@ -1,10 +1,13 @@
-package com.example.mealsapp.data.database.localDatabase;
+package com.example.mealsapp.data.database;
 
 import android.content.Context;
 
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+
+import com.example.mealsapp.data.database.dao.FavoriteMeal;
+import com.example.mealsapp.data.database.dao.FavoriteMealDao;
 
 @Database(entities = {FavoriteMeal.class}, version = 2)
 public abstract class MealsDatabase extends RoomDatabase {

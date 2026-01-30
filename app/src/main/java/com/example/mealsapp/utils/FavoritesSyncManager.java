@@ -2,8 +2,8 @@ package com.example.mealsapp.utils;
 
 import android.content.Context;
 
-import com.example.mealsapp.data.database.localDatabase.FavoriteMealDao;
-import com.example.mealsapp.data.database.localDatabase.MealsDatabase;
+import com.example.mealsapp.data.database.dao.FavoriteMealDao;
+import com.example.mealsapp.data.database.MealsDatabase;
 
 import io.reactivex.rxjava3.core.Completable;
 
