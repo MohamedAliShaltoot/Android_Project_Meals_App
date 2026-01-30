@@ -6,7 +6,8 @@ import java.util.List;
 public interface SearchView {
 
     void showResults(List<Meal> meals);
-
     void showEmpty();
+    void showNoInternet();
+    void hideNoInternet();
 }
 

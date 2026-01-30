@@ -7,7 +7,14 @@
     android:orientation="vertical"
     android:background="@color/white"
     android:padding="16dp">
-
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieNoInternet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/no_connection_with_internet"/>
     <!-- Search Bar -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilSearch"

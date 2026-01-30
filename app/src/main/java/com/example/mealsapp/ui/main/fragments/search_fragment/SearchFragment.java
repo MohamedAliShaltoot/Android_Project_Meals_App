@@ -23,6 +23,7 @@ import com.example.mealsapp.ui.main.fragments.search_fragment.presenter.SearchPr
 import com.example.mealsapp.ui.main.fragments.search_fragment.presenter.SearchView;
 import com.example.mealsapp.data.search.SearchRepositoryImpl;
 import com.example.mealsapp.utils.AppSnackbar;
+import com.example.mealsapp.utils.NetworkUtils;
 import com.example.mealsapp.utils.SnackType;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.textfield.TextInputEditText;
@@ -32,9 +33,8 @@ import java.util.List;
 
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
-
 public class SearchFragment extends Fragment implements SearchView {
-
+    private LottieAnimationView lottieNoInternet;
     private TextInputEditText etSearch;
     private RecyclerView rvResults;
     private ImageView imgPlaceholder, imgEmpty;
@@ -42,7 +42,6 @@ public class SearchFragment extends Fragment implements SearchView {
     private ChipGroup chipGroup;
     private LottieAnimationView lottieEmpty;
     private LottieAnimationView lottieIdle;
-
     private MealsAdapter mealsAdapter;
     private final List<Meal> mealsList = new ArrayList<>();
 
@@ -59,12 +58,9 @@ public class SearchFragment extends Fragment implements SearchView {
     ) {
 
         View view = inflater.inflate(R.layout.fragment_search, container, false);
-
-
         etSearch = view.findViewById(R.id.etSearchQuery);
         rvResults = view.findViewById(R.id.rvSearchResults);
         lottieIdle = view.findViewById(R.id.lottieIdle);
-        //imgPlaceholder = view.findViewById(R.id.imgSearchPlaceholder);
         layoutEmpty = view.findViewById(R.id.layoutEmpty);
         lottieEmpty = view.findViewById(R.id.lottieEmpty);
         chipGroup = view.findViewById(R.id.chipGroupFilter);
@@ -81,19 +77,28 @@ public class SearchFragment extends Fragment implements SearchView {
                         .filter(query -> !query.isEmpty())
                         .observeOn(io.reactivex.rxjava3.android.schedulers.AndroidSchedulers.mainThread())
                         .subscribe(query -> {
-                            if (selectedFilter.isEmpty()) {
-                                AppSnackbar.show(
-                                        etSearch,
-                                        "Please select a filter first",
-                                        SnackType.INFO
-                                );
+                            if (!NetworkUtils.isInternetAvailable(requireContext())) {
+                                showNoInternet();
                                 return;
                             }
 
+                            if (selectedFilter.isEmpty()) {
+                                AppSnackbar.show(etSearch, "Please select a filter first", SnackType.INFO);
+                                return;
+                            }
+
+                            hideNoInternet();
                             presenter.search(selectedFilter, query);
                         })
+//
         );
+        lottieNoInternet = view.findViewById(R.id.lottieNoInternet);
 
+        lottieNoInternet.setOnClickListener(v -> {
+            if (!selectedFilter.isEmpty()) {
+                presenter.search(selectedFilter, etSearch.getText().toString());
+            }
+        });
         rvResults.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         mealsAdapter = new MealsAdapter(
@@ -201,5 +206,24 @@ public class SearchFragment extends Fragment implements SearchView {
         uiDisposable.clear();
         presenter.onDestroy();
     }
+    @Override
+    public void showNoInternet() {
+        lottieNoInternet.setVisibility(View.VISIBLE);
+        rvResults.setVisibility(View.GONE);
+        layoutEmpty.setVisibility(View.GONE);
+        lottieIdle.setVisibility(View.GONE);
+    }
 
+    @Override
+    public void hideNoInternet() {
+        lottieNoInternet.setVisibility(View.GONE);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (NetworkUtils.isInternetAvailable(requireContext())) {
+            hideNoInternet();
+        }
+    }
 }
