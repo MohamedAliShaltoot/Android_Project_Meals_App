@@ -20,6 +20,10 @@ public class SearchRepoImp implements SearchRepo {
     public Single<MealsResponse> searchByIngredient(String ingredient) {
         return RetrofitClient.getApi().filterByIngredient(ingredient);
     }
+    @Override
+    public Single<MealsResponse> searchByName(String name) {
+        return RetrofitClient.getApi().searchByName(name);
+    }
 
 }
 

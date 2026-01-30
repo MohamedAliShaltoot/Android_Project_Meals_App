@@ -5,6 +5,7 @@ import com.example.mealsapp.data.model.MealsResponse;
 import com.example.mealsapp.ui.main.fragments.search_fragment.repo.SearchRepo;
 import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
@@ -18,55 +19,93 @@ public class SearchPresenterImp implements SearchPresenter {
         this.view = view;
         this.repo = repo;
     }
-
     @Override
     public void search(String filter, String query) {
         if (query.isEmpty() || filter.isEmpty()) return;
 
+        Single<MealsResponse> source;
+
         switch (filter) {
             case "Category":
-                disposable.add(
-                        repo.searchByCategory(query)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(
-                                        this::handleResponse,
-                                        throwable -> {
-                                            if (view != null) view.showEmpty();
-                                        }
-                                )
-                );
+                source = repo.searchByCategory(query);
                 break;
 
             case "Country":
-                disposable.add(
-                        repo.searchByCountry(query)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(
-                                        this::handleResponse,
-                                        throwable -> {
-                                            if (view != null) view.showEmpty();
-                                        }
-                                )
-                );
+                source = repo.searchByCountry(query);
                 break;
 
             case "Ingredient":
-                disposable.add(
-                        repo.searchByIngredient(query)
-                                .subscribeOn(Schedulers.io())
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(
-                                        this::handleResponse,
-                                        throwable -> {
-                                            if (view != null) view.showEmpty();
-                                        }
-                                )
-                );
+                source = repo.searchByIngredient(query);
                 break;
+
+            case "Name":
+                source = repo.searchByName(query);
+                break;
+
+            default:
+                return;
         }
+
+        disposable.add(
+                source.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                                this::handleResponse,
+                                throwable -> {
+                                    if (view != null) view.showEmpty();
+                                }
+                        )
+        );
     }
+
+//    @Override
+//    public void search(String filter, String query) {
+//        if (query.isEmpty() || filter.isEmpty()) return;
+//
+//        switch (filter) {
+//            case "Category":
+//                disposable.add(
+//                        repo.searchByCategory(query)
+//                                .subscribeOn(Schedulers.io())
+//                                .observeOn(AndroidSchedulers.mainThread())
+//                                .subscribe(
+//                                        this::handleResponse,
+//                                        throwable -> {
+//                                            if (view != null) view.showEmpty();
+//                                        }
+//                                )
+//                );
+//                break;
+//
+//            case "Country":
+//                disposable.add(
+//                        repo.searchByCountry(query)
+//                                .subscribeOn(Schedulers.io())
+//                                .observeOn(AndroidSchedulers.mainThread())
+//                                .subscribe(
+//                                        this::handleResponse,
+//                                        throwable -> {
+//                                            if (view != null) view.showEmpty();
+//                                        }
+//                                )
+//                );
+//                break;
+//
+//            case "Ingredient":
+//                disposable.add(
+//                        repo.searchByIngredient(query)
+//                                .subscribeOn(Schedulers.io())
+//                                .observeOn(AndroidSchedulers.mainThread())
+//                                .subscribe(
+//                                        this::handleResponse,
+//                                        throwable -> {
+//                                            if (view != null) view.showEmpty();
+//                                        }
+//                                )
+//                );
+//                break;
+//        }
+//    }
 
     private void handleResponse(MealsResponse response) {
         if (view == null) return;

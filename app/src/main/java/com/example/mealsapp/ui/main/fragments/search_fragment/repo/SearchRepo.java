@@ -8,6 +8,6 @@ public interface SearchRepo {
     Single<MealsResponse> searchByCategory(String category);
     Single<MealsResponse> searchByCountry(String country);
     Single<MealsResponse> searchByIngredient(String ingredient);
-
+    Single<MealsResponse> searchByName(String name);
 }
 
