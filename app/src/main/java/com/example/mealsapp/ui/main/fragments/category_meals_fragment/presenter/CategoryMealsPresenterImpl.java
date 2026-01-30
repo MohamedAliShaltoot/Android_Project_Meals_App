@@ -1,6 +1,6 @@
 package com.example.mealsapp.ui.main.fragments.category_meals_fragment.presenter;
 
-import com.example.mealsapp.ui.main.fragments.category_meals_fragment.repo.CategoryMealsRepo;
+import com.example.mealsapp.data.meals.CategoryMealsRepository;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -10,12 +10,12 @@ public class CategoryMealsPresenterImpl
         implements CategoryMealsContract.Presenter {
 
     private CategoryMealsContract.View view;
-    private final CategoryMealsRepo repo;
+    private final CategoryMealsRepository repo;
     private final CompositeDisposable disposable = new CompositeDisposable();
 
     public CategoryMealsPresenterImpl(
             CategoryMealsContract.View view,
-            CategoryMealsRepo repo
+            CategoryMealsRepository repo
     ) {
         this.view = view;
         this.repo = repo;

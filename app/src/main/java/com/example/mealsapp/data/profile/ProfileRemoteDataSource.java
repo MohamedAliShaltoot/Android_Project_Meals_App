@@ -1,4 +1,9 @@
-package com.example.mealsapp.ui.main.fragments.profile_fragment.repo;
+package com.example.mealsapp.data.profile;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -7,23 +12,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class ProfileRepoImp implements ProfileRepo {
+public class ProfileRemoteDataSource {
 
-    private final FirebaseAuth auth;
-    private final FirebaseFirestore db;
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public ProfileRepoImp() {
-        auth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-    }
-
-    @Override
     public FirebaseUser getCurrentUser() {
         return auth.getCurrentUser();
     }
 
-    @Override
-    public void getUserName(String uid, OnUserNameCallback callback) {
+    public void getUserName(String uid, OnResult<String> callback) {
         db.collection("users")
                 .document(uid)
                 .get()
@@ -37,19 +35,28 @@ public class ProfileRepoImp implements ProfileRepo {
                 .addOnFailureListener(e -> callback.onFailure());
     }
 
-    @Override
-    public void logout(OnLogoutCallback callback) {
+    public void logout(Runnable onComplete) {
         auth.signOut();
 
         GoogleSignInClient googleSignInClient =
                 GoogleSignIn.getClient(
-                        com.google.firebase.FirebaseApp.getInstance().getApplicationContext(),
-                        new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        com.google.firebase.FirebaseApp
+                                .getInstance()
+                                .getApplicationContext(),
+                        new GoogleSignInOptions.Builder(
+                                GoogleSignInOptions.DEFAULT_SIGN_IN
+                        )
                                 .requestEmail()
                                 .build()
                 );
 
-        googleSignInClient.signOut().addOnCompleteListener(task -> callback.onComplete());
+        // to force app to choose account
+        googleSignInClient.revokeAccess()
+                .addOnCompleteListener(task -> onComplete.run());
+    }
+
+    public interface OnResult<T> {
+        void onSuccess(T data);
+        void onFailure();
     }
 }
-

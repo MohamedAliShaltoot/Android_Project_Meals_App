@@ -11,9 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.mealsapp.R;
-import com.example.mealsapp.data.database.localDatabase.FavoriteMeal;
-import com.example.mealsapp.utils.AppSnackbar;
-import com.example.mealsapp.utils.SnackType;
+import com.example.mealsapp.data.database.dao.FavoriteMeal;
+
 import java.util.ArrayList;
 import java.util.List;
 public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {

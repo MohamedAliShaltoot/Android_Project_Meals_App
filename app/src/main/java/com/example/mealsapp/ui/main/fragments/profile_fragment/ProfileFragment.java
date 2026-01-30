@@ -12,11 +12,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.mealsapp.R;
+import com.example.mealsapp.data.database.MealsDatabase;
+import com.example.mealsapp.data.profile.ProfileLocalDataSource;
+import com.example.mealsapp.data.profile.ProfileRemoteDataSource;
 import com.example.mealsapp.ui.auth.login.LoginActivity;
 import com.example.mealsapp.ui.main.fragments.profile_fragment.presneter.ProfilePresenter;
 import com.example.mealsapp.ui.main.fragments.profile_fragment.presneter.ProfilePresenterImp;
 import com.example.mealsapp.ui.main.fragments.profile_fragment.presneter.ProfileView;
-import com.example.mealsapp.ui.main.fragments.profile_fragment.repo.ProfileRepoImp;
+import com.example.mealsapp.data.profile.ProfileRepositoryImpl;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -43,9 +46,20 @@ public class ProfileFragment extends Fragment implements ProfileView {
         imgProfile = view.findViewById(R.id.imgProfile);
         btnLogout = view.findViewById(R.id.btnLogout);
 
+//        presenter = new ProfilePresenterImp(
+//                this,
+//                new ProfileRepositoryImpl(),
+//                requireContext()
+//        );
         presenter = new ProfilePresenterImp(
                 this,
-                new ProfileRepoImp(),
+                new ProfileRepositoryImpl(
+                        new ProfileRemoteDataSource(),
+                        new ProfileLocalDataSource(
+                                MealsDatabase.getInstance(requireContext())
+                                        .favoriteMealDao()
+                        )
+                ),
                 requireContext()
         );
 

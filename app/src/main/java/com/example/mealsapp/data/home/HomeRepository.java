@@ -1,16 +1,10 @@
-package com.example.mealsapp.ui.main.fragments.home_fragment.repo;
-
+package com.example.mealsapp.data.home;
 
 import com.example.mealsapp.data.model.CategoriesResponse;
 import com.example.mealsapp.data.model.MealsResponse;
-
 import io.reactivex.rxjava3.core.Single;
-import retrofit2.Callback;
-
-public interface HomeRepo {
-
+public interface HomeRepository {
     Single<CategoriesResponse> getCategories();
     Single<MealsResponse> getRandomMeal();
-
 }
 

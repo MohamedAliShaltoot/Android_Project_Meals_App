@@ -12,12 +12,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.mealsapp.R;
-import com.example.mealsapp.data.database.localDatabase.MealsDatabase;
+import com.example.mealsapp.data.database.MealsDatabase;
 import com.example.mealsapp.data.model.Meal;
 import com.example.mealsapp.ui.main.adapters.IngredientsAdapter;
 import com.example.mealsapp.ui.main.fragments.meals_details_fragment.presenter.MealDetailsContract;
 import com.example.mealsapp.ui.main.fragments.meals_details_fragment.presenter.MealDetailsPresenterImpl;
-import com.example.mealsapp.ui.main.fragments.meals_details_fragment.repo.MealDetailsRepositoryImpl;
+import com.example.mealsapp.data.meals.MealDetailsRepositoryImpl;
 import com.example.mealsapp.utils.AppSnackbar;
 import com.example.mealsapp.utils.SnackType;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
@@ -34,7 +34,6 @@ public class MealDetailsFragment extends Fragment
     private TextView tvName, tvCountry, tvSteps;
     private RecyclerView rvIngredients;
     private YouTubePlayerView youtubePlayerView;
-
     private MealDetailsContract.Presenter presenter;
 
     @Override
