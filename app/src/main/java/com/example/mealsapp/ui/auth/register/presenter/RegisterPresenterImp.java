@@ -2,6 +2,7 @@ package com.example.mealsapp.ui.auth.register.presenter;
 
 
 import com.example.mealsapp.ui.auth.register.repo.RegisterRepo;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterPresenterImp implements RegisterPresenter {
 
@@ -24,12 +25,20 @@ public class RegisterPresenterImp implements RegisterPresenter {
         view.showLoading();
 
         repo.registerUser(name, email, password, new RegisterRepo.OnRegisterCallback() {
+//            @Override
+//            public void onSuccess(com.google.firebase.auth.FirebaseUser user) {
+//                view.hideLoading();
+//                view.enableRegisterButton();
+//                view.navigateToMain();
+//            }
+
             @Override
-            public void onSuccess(com.google.firebase.auth.FirebaseUser user) {
+            public void onSuccess(FirebaseUser user) {
                 view.hideLoading();
                 view.enableRegisterButton();
                 view.navigateToMain();
             }
+
 
             @Override
             public void onFailure(String message) {

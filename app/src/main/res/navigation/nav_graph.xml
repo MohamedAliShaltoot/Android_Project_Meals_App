@@ -36,7 +36,7 @@
     <!-- CATEGORY MEALS -->
     <fragment
         android:id="@+id/categoryMealsFragment"
-        android:name="com.example.mealsapp.ui.main.CategoryMealsFragment">
+        android:name="com.example.mealsapp.ui.main.fragments.category_meals_fragment.CategoryMealsFragment">
 
         <argument
             android:name="category"
@@ -51,7 +51,7 @@
     <!-- MEAL DETAILS -->
     <fragment
         android:id="@+id/mealDetailsFragment"
-        android:name="com.example.mealsapp.ui.main.MealDetailsFragment">
+        android:name="com.example.mealsapp.ui.main.fragments.meals_details_fragment.MealDetailsFragment">
 
         <argument
             android:name="mealId"

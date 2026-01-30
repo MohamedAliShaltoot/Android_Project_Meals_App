@@ -24,6 +24,10 @@ public interface FavoriteMealDao {
 
     @Query("SELECT EXISTS(SELECT 1 FROM favorite_meals WHERE idMeal=:id)")
     Single<Boolean> isFavorite(String id);
+
+    @Query("DELETE FROM favorite_meals")
+    Completable clearAll();
+
 }
 
 

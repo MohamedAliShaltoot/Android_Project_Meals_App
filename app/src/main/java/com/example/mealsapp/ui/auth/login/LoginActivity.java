@@ -37,7 +37,12 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         tvRegister = findViewById(R.id.tvGoRegister);
         progressBar = findViewById(R.id.progressBar);
 
-        presenter = new LoginPresenterImp(this, new LoginRepoImp(this));
+        //presenter = new LoginPresenterImp(this, new LoginRepoImp(this));
+        presenter = new LoginPresenterImp(
+                this,
+                new LoginRepoImp(this),
+                this // context
+        );
 
         btnLogin.setOnClickListener(v ->
                 presenter.loginWithEmail(
