@@ -24,6 +24,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 import org.jspecify.annotations.NonNull;
+import org.jspecify.annotations.Nullable;
 
 public class MealDetailsFragment extends Fragment
         implements MealDetailsContract.View {
@@ -49,9 +50,6 @@ public class MealDetailsFragment extends Fragment
                 false
         );
 
-        MealDetailsFragmentArgs args =
-                MealDetailsFragmentArgs.fromBundle(getArguments());
-
         imgMeal = view.findViewById(R.id.imgMeal);
         btnFavorite = view.findViewById(R.id.btnFavorite);
         tvName = view.findViewById(R.id.tvMealName);
@@ -72,14 +70,21 @@ public class MealDetailsFragment extends Fragment
                 new MealDetailsRepositoryImpl(
                         MealsDatabase.getInstance(requireContext())
                                 .favoriteMealDao()
-                )
+
+                ),requireContext()
         );
-
-        presenter.loadMeal(args.getMealId());
-
         btnFavorite.setOnClickListener(v -> presenter.toggleFavorite());
 
         return view;
+    }
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        MealDetailsFragmentArgs args =
+                MealDetailsFragmentArgs.fromBundle(getArguments());
+
+        presenter.loadMeal(args.getMealId());
     }
 
     @Override
@@ -113,16 +118,25 @@ public class MealDetailsFragment extends Fragment
                         : R.drawable.ic_heart_outline
         );
     }
-
     @Override
     public void showMessage(String message, SnackType type) {
-        AppSnackbar.show(btnFavorite, message, type);
+        View root = requireView().findViewById(R.id.rootLayout);
+        AppSnackbar.show(root, message, type);
     }
 
     @Override
     public void showError(String message) {
-        AppSnackbar.show(btnFavorite, message, SnackType.ERROR);
+        View root = requireView().findViewById(R.id.rootLayout);
+        AppSnackbar.show(root, message, SnackType.ERROR);
     }
+
+@Override
+public void showGuestView() {
+    btnFavorite.setEnabled(false);
+    View root = requireView().findViewById(R.id.rootLayout);
+    AppSnackbar.show(root, "Login to use favorites", SnackType.INFO);
+}
+
 
     private void setupYoutube(String url) {
         if (url == null || url.isEmpty()) return;

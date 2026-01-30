@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.example.mealsapp.R;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -17,8 +16,6 @@ public class AppSnackbar {
 
         Snackbar snackbar = Snackbar.make(anchor, "", getDuration(type));
         View snackbarView = snackbar.getView();
-
-       // snackbarView.setBackground(null);
         snackbarView.setBackgroundTintList(null);
         snackbarView.setBackground(
                 anchor.getContext().getDrawable(getBackground(type))

@@ -56,11 +56,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
             @Override
             public void onClick(View v) {
                 listener.onRemove(meal);
-                AppSnackbar.show(
-                        holder.itemView,
-                        meal.name + " Removed from favorites",
-                        SnackType.INFO
-                );
             }
         });
     }
@@ -82,16 +77,4 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
             btnRemove = itemView.findViewById(R.id.btnRemove);
         }
     }
-    public void removeBySwipe(int position, View view) {
-        FavoriteMeal meal = list.get(position);
-        listener.onRemove(meal);
-
-        AppSnackbar.show(
-                view,
-                meal.name + " Removed from favorites",
-                SnackType.INFO
-        );
-    }
-
-
 }

@@ -21,11 +21,6 @@ public class FavoritesRepositoryImpl implements FavoritesRepository {
     public Flowable<List<FavoriteMeal>> getAllFavorites() {
         return dao.getAllFavorites();
     }
-
-//    @Override
-//    public Completable removeFavorite(FavoriteMeal meal) {
-//        return dao.delete(meal);
-//    }
     @Override
     public Completable removeFavorite(FavoriteMeal meal) {
         return dao.delete(meal)

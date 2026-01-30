@@ -1,6 +1,7 @@
 package com.example.mealsapp.utils;
 
 import com.example.mealsapp.data.database.localDatabase.FavoriteMeal;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -30,6 +31,9 @@ public class FavoritesRemoteDataSource {
     }
 
     public Completable removeFavorite(String mealId) {
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            return Completable.complete(); // silently ignore
+        }
         return Completable.create(emitter ->
                 firestore.collection("users")
                         .document(userId)

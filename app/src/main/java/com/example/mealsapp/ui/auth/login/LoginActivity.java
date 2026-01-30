@@ -15,6 +15,7 @@ import com.example.mealsapp.ui.auth.login.presenter.LoginView;
 import com.example.mealsapp.ui.auth.login.repo.LoginRepoImp;
 import com.example.mealsapp.ui.auth.register.RegisterActivity;
 import com.example.mealsapp.ui.main.MainActivity;
+import com.example.mealsapp.utils.UserSession;
 
 public class LoginActivity extends AppCompatActivity implements LoginView {
 
@@ -22,7 +23,7 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
     private Button btnLogin, btnGoogleLogin;
     private TextView tvRegister;
     private ProgressBar progressBar;
-
+    TextView tvGuest;
     private LoginPresenter presenter;
 
     @Override
@@ -36,8 +37,13 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
         btnGoogleLogin = findViewById(R.id.btnLoginWithEmail);
         tvRegister = findViewById(R.id.tvGoRegister);
         progressBar = findViewById(R.id.progressBar);
+         tvGuest = findViewById(R.id.tvGoToGuestMode);
 
-        //presenter = new LoginPresenterImp(this, new LoginRepoImp(this));
+        tvGuest.setOnClickListener(v -> {
+            UserSession.loginGuest(this);
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        });
         presenter = new LoginPresenterImp(
                 this,
                 new LoginRepoImp(this),
