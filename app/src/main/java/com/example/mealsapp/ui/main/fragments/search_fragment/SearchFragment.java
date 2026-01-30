@@ -41,6 +41,7 @@ public class SearchFragment extends Fragment implements SearchView {
     private LinearLayout layoutEmpty;
     private ChipGroup chipGroup;
     private LottieAnimationView lottieEmpty;
+    private LottieAnimationView lottieIdle;
 
     private MealsAdapter mealsAdapter;
     private final List<Meal> mealsList = new ArrayList<>();
@@ -62,7 +63,8 @@ public class SearchFragment extends Fragment implements SearchView {
 
         etSearch = view.findViewById(R.id.etSearchQuery);
         rvResults = view.findViewById(R.id.rvSearchResults);
-        imgPlaceholder = view.findViewById(R.id.imgSearchPlaceholder);
+        lottieIdle = view.findViewById(R.id.lottieIdle);
+        //imgPlaceholder = view.findViewById(R.id.imgSearchPlaceholder);
         layoutEmpty = view.findViewById(R.id.layoutEmpty);
         lottieEmpty = view.findViewById(R.id.lottieEmpty);
         chipGroup = view.findViewById(R.id.chipGroupFilter);
@@ -136,40 +138,77 @@ public class SearchFragment extends Fragment implements SearchView {
             } else if (checkedId == R.id.chipIngredient) {
                 selectedFilter = "Ingredient";
                 tilSearch.setHint("Search by ingredient");
+            }else if (checkedId == R.id.chipName) {
+                selectedFilter = "Name";
+                tilSearch.setHint("Search by meal name");
             }
         });
         return view;
     }
 
-@Override
-public void showResults(List<Meal> meals) {
-    mealsList.clear();
-    mealsList.addAll(meals);
-    mealsAdapter.notifyDataSetChanged();
+//@Override
+//public void showResults(List<Meal> meals) {
+//    mealsList.clear();
+//    mealsList.addAll(meals);
+//    mealsAdapter.notifyDataSetChanged();
+//
+//    rvResults.setVisibility(View.VISIBLE);
+//    imgPlaceholder.setVisibility(View.GONE);
+//    layoutEmpty.setVisibility(View.GONE);
+//
+//    lottieEmpty.cancelAnimation();
+//}
+    @Override
+    public void showResults(List<Meal> meals) {
+        mealsList.clear();
+        mealsList.addAll(meals);
+        mealsAdapter.notifyDataSetChanged();
 
-    rvResults.setVisibility(View.VISIBLE);
-    imgPlaceholder.setVisibility(View.GONE);
-    layoutEmpty.setVisibility(View.GONE);
+        rvResults.setVisibility(View.VISIBLE);
 
-    lottieEmpty.cancelAnimation();
-}
+        layoutEmpty.setVisibility(View.GONE);
+        lottieIdle.setVisibility(View.GONE);
 
-
-@Override
-public void showEmpty() {
-    rvResults.setVisibility(View.GONE);
-    imgPlaceholder.setVisibility(View.GONE);
-    layoutEmpty.setVisibility(View.VISIBLE);
-
-    lottieEmpty.playAnimation();
-}
+        lottieIdle.cancelAnimation();
+        lottieEmpty.cancelAnimation();
+    }
 
 
+//@Override
+//public void showEmpty() {
+//    rvResults.setVisibility(View.GONE);
+//    imgPlaceholder.setVisibility(View.GONE);
+//    layoutEmpty.setVisibility(View.VISIBLE);
+//
+//    lottieEmpty.playAnimation();
+//}
+
+    @Override
+    public void showEmpty() {
+        rvResults.setVisibility(View.GONE);
+        lottieIdle.setVisibility(View.GONE);
+
+        layoutEmpty.setVisibility(View.VISIBLE);
+        lottieEmpty.playAnimation();
+    }
+
+
+
+//    private void resetUI() {
+//        rvResults.setVisibility(View.GONE);
+//        imgPlaceholder.setVisibility(View.VISIBLE);
+//        layoutEmpty.setVisibility(View.GONE);
+//    }
     private void resetUI() {
         rvResults.setVisibility(View.GONE);
-        imgPlaceholder.setVisibility(View.VISIBLE);
         layoutEmpty.setVisibility(View.GONE);
+
+        lottieIdle.setVisibility(View.VISIBLE);
+        lottieIdle.playAnimation();
+
+        lottieEmpty.cancelAnimation();
     }
+
 
     private void enableSearchInput() {
         etSearch.setFocusable(true);
