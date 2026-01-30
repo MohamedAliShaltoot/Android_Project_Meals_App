@@ -13,7 +13,7 @@
         android:visibility="gone"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        app:lottie_rawRes="@raw/lonely404" />
+        app:lottie_rawRes="@raw/no_connection_with_internet" />
 
     <!-- Search -->
     <EditText
