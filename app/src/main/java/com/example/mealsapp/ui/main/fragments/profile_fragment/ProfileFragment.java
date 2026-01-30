@@ -43,7 +43,12 @@ public class ProfileFragment extends Fragment implements ProfileView {
         imgProfile = view.findViewById(R.id.imgProfile);
         btnLogout = view.findViewById(R.id.btnLogout);
 
-        presenter = new ProfilePresenterImp(this, new ProfileRepoImp());
+       // presenter = new ProfilePresenterImp(this, new ProfileRepoImp());
+        presenter = new ProfilePresenterImp(
+                this,
+                new ProfileRepoImp(),
+                requireContext()
+        );
 
         btnLogout.setOnClickListener(v -> showLogoutDialog());
 
