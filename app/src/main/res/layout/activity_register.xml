@@ -24,6 +24,7 @@
         app:startIconDrawable="@drawable/ic_user"
         app:startIconTint="@color/primary"
         app:boxBackgroundMode="outline"
+        app:hintTextColor="@color/black"
         app:boxStrokeColor="@color/textfield_stroke_color"
         app:boxCornerRadiusTopStart="12dp"
         app:boxCornerRadiusTopEnd="12dp"
@@ -33,7 +34,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etName"
             android:hint="@string/name"
-            android:textColorHint="@color/gray"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
@@ -46,18 +48,20 @@
         app:startIconDrawable="@drawable/ic_email"
         app:startIconTint="@color/primary"
         app:boxBackgroundMode="outline"
-        app:boxStrokeColor="@color/textfield_stroke_color"
         app:boxCornerRadiusTopStart="12dp"
+        app:hintTextColor="@color/black"
         app:boxCornerRadiusTopEnd="12dp"
+        app:boxStrokeColor="@color/textfield_stroke_color"
         app:boxCornerRadiusBottomStart="12dp"
         app:boxCornerRadiusBottomEnd="12dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etEmail"
             android:hint="@string/email"
-            android:textColorHint="@color/gray"
+            android:textColorHint="@color/black"
             android:inputType="textEmailAddress"
             android:layout_width="match_parent"
+            android:textColor="@color/black"
             android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,17 +73,19 @@
         app:startIconTint="@color/primary"
         app:endIconMode="password_toggle"
         app:endIconTint="@color/primary"
+        app:hintTextColor="@color/black"
         app:boxBackgroundMode="outline"
-        app:boxStrokeColor="@color/textfield_stroke_color"
         app:boxCornerRadiusTopStart="12dp"
         app:boxCornerRadiusTopEnd="12dp"
+        app:boxStrokeColor="@color/textfield_stroke_color"
         app:boxCornerRadiusBottomStart="12dp"
         app:boxCornerRadiusBottomEnd="12dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etPassword"
             android:hint="@string/password"
-            android:textColorHint="@color/gray"
+            android:textColorHint="@color/black"
+            android:textColor="@color/black"
             android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -103,29 +109,6 @@
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:visibility="gone"/>
-
-    <!-- Divider -->
-    <TextView
-        android:text="OR"
-        android:textColor="@color/gray"
-        android:layout_marginVertical="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
-
-    <!-- Register with Email -->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnRegisterWithEmail"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Register with Email"
-        app:icon="@drawable/google_icon"
-        app:iconGravity="textStart"
-        app:strokeWidth="2dp"
-        app:strokeColor="@color/primary"
-        android:textColor="@color/primary"
-        android:backgroundTint="@android:color/transparent"
-        app:cornerRadius="12dp"/>
 
     <!-- Already have account -->
     <com.google.android.material.button.MaterialButton
