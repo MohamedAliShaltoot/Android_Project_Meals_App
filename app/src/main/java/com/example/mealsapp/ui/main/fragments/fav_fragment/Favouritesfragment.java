@@ -20,6 +20,8 @@ import com.example.mealsapp.ui.main.fragments.fav_fragment.presenter.FavoritesVi
 import com.example.mealsapp.ui.main.fragments.fav_fragment.repo.FavoritesRepositoryImpl;
 import com.example.mealsapp.utils.AppSnackbar;
 import com.example.mealsapp.utils.SnackType;
+import com.example.mealsapp.utils.UserSession;
+
 import java.util.List;
 
 public class Favouritesfragment extends Fragment implements FavoritesView {
@@ -33,7 +35,14 @@ public class Favouritesfragment extends Fragment implements FavoritesView {
     public View onCreateView( @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_favourites, container, false);
-
+        if (UserSession.isGuest(requireContext())) {
+            AppSnackbar.show(
+                    container,
+                    "Login to view favorites",
+                    SnackType.INFO
+            );
+            return inflater.inflate(R.layout.login_to_see_fav, container, false);
+        }
         rvFavorites = view.findViewById(R.id.rvFavorites);
         rvFavorites.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -49,12 +58,7 @@ public class Favouritesfragment extends Fragment implements FavoritesView {
                         MealsDatabase.getInstance(requireContext()).favoriteMealDao()
                 )
         );
-
-
         presenter.loadFavorites();
-
-        setupSwipe();
-
         return view;
     }
 
@@ -70,39 +74,6 @@ public class Favouritesfragment extends Fragment implements FavoritesView {
                 mealName + " Removed from favorites",
                 SnackType.INFO
         );
-    }
-    private void setupSwipe() {
-
-        ItemTouchHelper.SimpleCallback callback =
-                new ItemTouchHelper.SimpleCallback(
-                        0,
-                        ItemTouchHelper.LEFT
-                ) {
-
-                    @Override
-                    public boolean onMove(
-                            @NonNull RecyclerView recyclerView,
-                            @NonNull RecyclerView.ViewHolder viewHolder,
-                            @NonNull RecyclerView.ViewHolder target
-                    ) {
-                        return false;
-                    }
-
-                    @Override
-                    public void onSwiped(
-                            @NonNull RecyclerView.ViewHolder viewHolder,
-                            int direction
-                    ) {
-
-                        int position = viewHolder.getBindingAdapterPosition();
-
-                        if (position != RecyclerView.NO_POSITION) {
-                            adapter.removeBySwipe(position, viewHolder.itemView);
-                        }
-                    }
-                };
-
-        new ItemTouchHelper(callback).attachToRecyclerView(rvFavorites);
     }
     @Override
     public void onDestroyView() {

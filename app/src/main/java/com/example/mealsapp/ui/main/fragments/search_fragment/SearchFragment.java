@@ -138,12 +138,6 @@ public class SearchFragment extends Fragment implements SearchView {
                 tilSearch.setHint("Search by ingredient");
             }
         });
-
-//        etSearch.setOnEditorActionListener((v, actionId, event) -> {
-//            presenter.search(selectedFilter, etSearch.getText().toString().trim());
-//            return true;
-//        });
-
         return view;
     }
 
@@ -191,12 +185,6 @@ public void showEmpty() {
         etSearch.setCursorVisible(false);
         etSearch.setInputType(InputType.TYPE_NULL);
     }
-
-//    @Override
-//    public void onDestroyView() {
-//        super.onDestroyView();
-//        presenter.onDestroy();
-//    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

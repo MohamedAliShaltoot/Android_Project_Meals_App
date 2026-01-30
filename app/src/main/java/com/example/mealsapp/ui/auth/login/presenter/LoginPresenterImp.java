@@ -21,11 +21,6 @@ public class LoginPresenterImp implements LoginPresenter {
     private LoginRepo repo;
 
     private static final int RC_SIGN_IN = 100;
-
-//    public LoginPresenterImp(LoginView view, LoginRepo repo) {
-//        this.view = view;
-//        this.repo = repo;
-//    }
     public LoginPresenterImp(LoginView view, LoginRepo repo, Context context) {
         this.view = view;
         this.repo = repo;
@@ -41,11 +36,6 @@ public class LoginPresenterImp implements LoginPresenter {
 
         view.showLoading();
         repo.loginWithEmail(email, password, new LoginRepo.OnLoginCallback() {
-//            @Override
-//            public void onSuccess(FirebaseUser user) {
-//                view.hideLoading();
-//                view.navigateToMain();
-//            }
 @Override
 public void onSuccess(FirebaseUser user) {
     syncFavoritesAndNavigate();
@@ -80,11 +70,6 @@ public void onSuccess(FirebaseUser user) {
 
             view.showLoading();
             repo.loginWithGoogleCredential(credential, new LoginRepo.OnLoginCallback() {
-              //  @Override
-//                public void onSuccess(FirebaseUser user) {
-//                    view.hideLoading();
-//                    view.navigateToMain();
-//                }
                 @Override
                 public void onSuccess(FirebaseUser user) {
                     syncFavoritesAndNavigate();

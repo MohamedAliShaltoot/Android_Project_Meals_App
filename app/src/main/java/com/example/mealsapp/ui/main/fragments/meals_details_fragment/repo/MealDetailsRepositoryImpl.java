@@ -10,12 +10,6 @@ import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
 public class MealDetailsRepositoryImpl implements MealDetailsRepository {
-
-//    private final FavoriteMealDao dao;
-//
-//    public MealDetailsRepositoryImpl(FavoriteMealDao dao) {
-//        this.dao = dao;
-//    }
 private final FavoriteMealDao dao;
     private final FirestoreFavoritesRepository firestoreRepo;
 
@@ -34,15 +28,6 @@ private final FavoriteMealDao dao;
         return dao.isFavorite(mealId);
     }
 
-//    @Override
-//    public Completable addFavorite(FavoriteMeal meal) {
-//        return dao.insert(meal);
-//    }
-//
-//    @Override
-//    public Completable removeFavorite(FavoriteMeal meal) {
-//        return dao.delete(meal);
-//    }
 @Override
 public Completable addFavorite(FavoriteMeal meal) {
     return dao.insert(meal)

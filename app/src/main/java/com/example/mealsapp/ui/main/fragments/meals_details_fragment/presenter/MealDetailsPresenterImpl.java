@@ -1,11 +1,12 @@
 package com.example.mealsapp.ui.main.fragments.meals_details_fragment.presenter;
 
-
+import android.content.Context;
 
 import com.example.mealsapp.data.database.localDatabase.FavoriteMeal;
 import com.example.mealsapp.data.model.Meal;
 import com.example.mealsapp.ui.main.fragments.meals_details_fragment.repo.MealDetailsRepository;
 import com.example.mealsapp.utils.SnackType;
+import com.example.mealsapp.utils.UserSession;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
@@ -17,38 +18,53 @@ public class MealDetailsPresenterImpl
     private MealDetailsContract.View view;
     private final MealDetailsRepository repo;
     private final CompositeDisposable disposable = new CompositeDisposable();
-
+Context context;
     private Meal currentMeal;
     private boolean isFavorite;
 
     public MealDetailsPresenterImpl(
             MealDetailsContract.View view,
-            MealDetailsRepository repo
+            MealDetailsRepository repo,
+            Context context
     ) {
         this.view = view;
         this.repo = repo;
+        this.context = context;
+
     }
 
-    @Override
-    public void loadMeal(String mealId) {
-        disposable.add(
-                repo.getMealDetails(mealId)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                response -> {
-                                    if (response.getMeals() == null ||
-                                            response.getMeals().isEmpty()) return;
+@Override
+public void loadMeal(String mealId) {
 
-                                    currentMeal = response.getMeals().get(0);
-                                    view.showMeal(currentMeal);
+    // Always load meal details
+    disposable.add(
+            repo.getMealDetails(mealId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            response -> {
+                                if (response.getMeals() == null ||
+                                        response.getMeals().isEmpty()) return;
 
+                                currentMeal = response.getMeals().get(0);
+                                view.showMeal(currentMeal);
+
+                                // Only check favorite if NOT guest
+                                if (!UserSession.isGuest(context)) {
                                     checkFavorite();
-                                },
-                                throwable -> view.showError(throwable.getMessage())
-                        )
-        );
+                                } else {
+                                    view.showFavoriteState(false);
+                                }
+                            },
+                            throwable -> view.showError(throwable.getMessage())
+                    )
+    );
+
+    // Guest UI hint
+    if (UserSession.isGuest(context)) {
+        view.showGuestView();
     }
+}
 
     private void checkFavorite() {
         disposable.add(
@@ -67,6 +83,11 @@ public class MealDetailsPresenterImpl
 
     @Override
     public void toggleFavorite() {
+        if (UserSession.isGuest(context)) {
+            view.showGuestView();
+            return;
+        }
+
         if (currentMeal == null) return;
 
         FavoriteMeal fav = new FavoriteMeal(

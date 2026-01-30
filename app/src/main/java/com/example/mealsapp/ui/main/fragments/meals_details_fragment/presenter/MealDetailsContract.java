@@ -10,6 +10,7 @@ public interface MealDetailsContract {
         void showFavoriteState(boolean isFavorite);
         void showMessage(String message, SnackType type);
         void showError(String message);
+        void showGuestView();
     }
 
     interface Presenter {

@@ -43,7 +43,6 @@ public class ProfileFragment extends Fragment implements ProfileView {
         imgProfile = view.findViewById(R.id.imgProfile);
         btnLogout = view.findViewById(R.id.btnLogout);
 
-       // presenter = new ProfilePresenterImp(this, new ProfileRepoImp());
         presenter = new ProfilePresenterImp(
                 this,
                 new ProfileRepoImp(),
@@ -59,6 +58,13 @@ public class ProfileFragment extends Fragment implements ProfileView {
     public void onStart() {
         super.onStart();
         presenter.loadUserData();
+    }
+    @Override
+    public void showGuestView() {
+        tvName.setText("Guest");
+        tvEmail.setText("Login to unlock features");
+        imgProfile.setImageResource(R.drawable.place_holder);
+        btnLogout.setText("Login");
     }
 
     private void showLogoutDialog() {

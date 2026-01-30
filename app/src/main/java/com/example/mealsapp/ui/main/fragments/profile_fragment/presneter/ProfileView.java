@@ -11,5 +11,7 @@ public interface ProfileView {
     void showPlaceholderImage();
 
     void navigateToLogin();
+    void showGuestView();
+
 }
 

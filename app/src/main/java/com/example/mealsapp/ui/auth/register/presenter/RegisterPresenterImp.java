@@ -25,13 +25,6 @@ public class RegisterPresenterImp implements RegisterPresenter {
         view.showLoading();
 
         repo.registerUser(name, email, password, new RegisterRepo.OnRegisterCallback() {
-//            @Override
-//            public void onSuccess(com.google.firebase.auth.FirebaseUser user) {
-//                view.hideLoading();
-//                view.enableRegisterButton();
-//                view.navigateToMain();
-//            }
-
             @Override
             public void onSuccess(FirebaseUser user) {
                 view.hideLoading();

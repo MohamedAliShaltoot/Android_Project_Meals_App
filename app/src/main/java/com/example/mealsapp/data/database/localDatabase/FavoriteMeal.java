@@ -29,15 +29,7 @@ public class FavoriteMeal {
         this.name = name;
         this.image = image;
     }
-//    public FavoriteMeal(
-//            @androidx.annotation.NonNull String idMeal,
-//            String name,
-//            String image
-//    ) {
-//        this.idMeal = idMeal;
-//        this.name = name;
-//        this.image = image;
-//    }
+
 }
 
 

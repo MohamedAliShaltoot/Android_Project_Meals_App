@@ -75,10 +75,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             presenter.getRandomMeal();
             presenter.getCategories();
         }
-
-       // presenter.getRandomMeal();
-       // presenter.getCategories();
-
         return view;
     }
 
