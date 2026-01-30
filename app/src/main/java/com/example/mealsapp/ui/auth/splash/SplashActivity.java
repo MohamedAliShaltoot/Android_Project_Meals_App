@@ -1,4 +1,4 @@
-package com.example.mealsapp.ui.splash;
+package com.example.mealsapp.ui.auth.splash;
 
 import android.content.Intent;
 import android.os.Bundle;

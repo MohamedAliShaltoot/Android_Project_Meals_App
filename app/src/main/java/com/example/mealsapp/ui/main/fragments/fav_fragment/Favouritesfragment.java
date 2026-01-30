@@ -7,17 +7,18 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.mealsapp.R;
 import com.example.mealsapp.data.database.localDatabase.FavoriteMeal;
 import com.example.mealsapp.data.database.localDatabase.MealsDatabase;
+import com.example.mealsapp.data.favorites.FavoritesLocalDataSource;
+import com.example.mealsapp.data.favorites.FavoritesRemoteDataSource;
 import com.example.mealsapp.ui.main.adapters.FavoritesAdapter;
 import com.example.mealsapp.ui.main.fragments.fav_fragment.presenter.FavoritesPresenter;
 import com.example.mealsapp.ui.main.fragments.fav_fragment.presenter.FavoritesPresenterImpl;
 import com.example.mealsapp.ui.main.fragments.fav_fragment.presenter.FavoritesView;
-import com.example.mealsapp.ui.main.fragments.fav_fragment.repo.FavoritesRepositoryImpl;
+import com.example.mealsapp.data.favorites.FavoritesRepositoryImpl;
 import com.example.mealsapp.utils.AppSnackbar;
 import com.example.mealsapp.utils.SnackType;
 import com.example.mealsapp.utils.UserSession;
@@ -52,10 +53,19 @@ public class Favouritesfragment extends Fragment implements FavoritesView {
 
         rvFavorites.setAdapter(adapter);
 
+//        presenter = new FavoritesPresenterImpl(
+//                this,
+//                new FavoritesRepositoryImpl(
+//                        MealsDatabase.getInstance(requireContext()).favoriteMealDao()
+//                )
+//        );
         presenter = new FavoritesPresenterImpl(
                 this,
                 new FavoritesRepositoryImpl(
-                        MealsDatabase.getInstance(requireContext()).favoriteMealDao()
+                        new FavoritesLocalDataSource(
+                                MealsDatabase.getInstance(requireContext()).favoriteMealDao()
+                        ),
+                        new FavoritesRemoteDataSource( )
                 )
         );
         presenter.loadFavorites();
