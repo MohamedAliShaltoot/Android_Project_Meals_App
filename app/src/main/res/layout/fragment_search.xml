@@ -90,17 +90,34 @@
             app:chipSpacingHorizontal="28dp"
             app:chipSpacingVertical="26dp"
             style="@style/Widget.MaterialComponents.Chip.Choice" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textColor="@color/white"
+            android:checkable="true"
+            app:checkedIcon="@drawable/ic_check"
+            app:checkedIconVisible="true"
+            app:chipIconVisible="false"
+            app:chipStrokeColor="@color/primary"
+            app:chipBackgroundColor="@color/chip_bg_selector"
+            app:rippleColor="@color/primary"
+            style="@style/Widget.MaterialComponents.Chip.Choice"/>
 
     </com.google.android.material.chip.ChipGroup>
 
     <!-- Placeholder -->
-    <ImageView
-        android:id="@+id/imgSearchPlaceholder"
-        android:layout_width="match_parent"
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottieIdle"
+        android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginTop="24dp"
-        android:scaleType="centerInside"
-        android:src="@drawable/place_holder"/>
+        android:layout_gravity="center_horizontal"
+        app:lottie_rawRes="@raw/no_data_found"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"/>
+
 
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
