@@ -1,89 +1,154 @@
-# FoodTrack
+# 🍽️ FoodTrack
 
-FoodTrack is an Android mobile application that helps users explore, organize, and manage their meals. Users can search for recipes, save their favorites, and create a weekly meal plan. The app offers different functionalities depending on whether the user is logged in or using the guest mode.
-
----
-
-## Features
-
-- **User Authentication**
-  - Sign up with a new email or log in with an existing account.
-  - Guest mode available (limited access).
-
-- **Home Screen**
-  - Daily meal suggestions are displayed in a card view.
-  - Categories section to explore meals by type.
-  - Quick access to search functionality.
-  - Tap on any meal to view details:
-    - Full name
-    - Origin
-    - Images
-    - Ingredients
-    - Preparation steps
-    - Instructional video
-
-- **Search Screen**
-  - Users can search for meals by:
-    - Country
-    - Category
-    - Ingredients
-  - Users must select a filter to perform a search.
-  - Displays all relevant results in a list.
-  - Tap on a meal to view full details.
-
-- **Favourite Screen**
-  - Logged-in users can save meals to favorites.
-  - Favorites displayed in card view with meal name, image, and a heart icon.
-  - Remove meals from favorites by:
-    - Tapping the red heart icon
-    - Swiping the card to the left
-  - Confirmation messages appear when a meal is removed.
-
-- **Profile Screen**
-  - Displays user profile picture, name, and email.
-  - Log out option with confirmation prompt.
-
-- **Guest Mode Limitations**
-  - Guests can view meals and search for recipes.
-  - Cannot add meals to favorites or create a weekly meal plan.
+FoodTrack is a modern Android application that allows users to explore meals, discover recipes, and save their favorite dishes.  
+The app delivers a smooth user experience with smart search, offline support, animations, and multiple user modes.
 
 ---
 
-## Screens
+## 🚀 User Journey
 
-1. **HomeScreen**
-2. **FavouriteScreen**
-3. **SearchScreen**
-4. **ProfileScreen**
-
----
-
-## How It Works
-
-1. Users open the app and choose to sign up, log in, or use guest mode.
-2. In the HomeScreen:
-   - Users can explore daily meals and categories.
-   - Tap a meal to see detailed information and video tutorials.
-   - Use the search bar to find specific meals using filters.
-3. In the FavouriteScreen:
-   - Logged-in users manage their favorite meals with easy add/remove functionality.
-4. In the ProfileScreen:
-   - Users can view account info and log out safely.
-5. Guest users can browse meals but cannot save favorites or create meal plans.
+1. When the app launches, a **Splash Screen** with a **Lottie Animation** is displayed.
+2. The app checks whether the user has opened it before.
+3. Based on this check:
+   - Returning users are redirected directly to the **Home Screen**.
+   - First-time users are navigated to the **Login Screen**.
 
 ---
 
-## Tech Stack
+## 🔐 Authentication & Access Modes
 
-- Frontend: Android / Java
-- Backend: Firebase (Authentication & Database)
-- Local Database: Room Database
+Users can:
+- **Log in** with an existing account.
+- **Sign up** and create a new account.
+- Continue using the app in **Guest Mode** (limited access).
 
+After a successful login or sign-up:
+- The user is redirected to the **Home Screen**.
+- A friendly **welcome message** is displayed.
 
 ---
 
-## Installation
+## 🏠 Home Screen
+
+The Home Screen acts as the main hub of the app and includes:
+- **Daily Meal** section displaying:
+  - Meal image
+  - Meal name
+  - Country of origin
+- **Categories** to explore meals by type.
+- A built-in **Search Bar** for quick access.
+- Ability to open full details by tapping on any meal.
+
+### 🌐 No Internet Connection
+- A clear **animation** appears when the internet connection is lost.
+- Once the connection is restored, meals and categories reload automatically.
+
+---
+
+## 🔍 Smart Search
+
+Users can search for meals using:
+- Meal name
+- Country
+- Category
+- Ingredients
+
+### Search Highlights
+- Search works **while typing** (first-letter search).
+- No need to press any confirmation button.
+- Results appear instantly.
+- If no matching data is found:
+  - A friendly **empty-state animation** is shown.
+
+---
+
+## 🍲 Meal Details Screen
+
+Each meal includes:
+- Meal image
+- Meal name
+- Country
+- Ingredients list
+- Step-by-step preparation instructions
+- Cooking video
+- **Add to Favorites** button
+
+---
+
+## ❤️ Favorites Screen
+
+- Available only for **logged-in users**.
+- Displays all meals added to favorites.
+- Users can remove meals at any time.
+- Actions such as adding or removing a meal trigger a **Snackbar** for feedback.
+
+### 📡 Offline Support
+- Favorite meals remain accessible even without an internet connection.
+
+---
+
+## 👤 Profile Screen
+
+The Profile Screen allows users to:
+- View personal information:
+  - Name
+  - Profile picture
+  - Email address
+- Log out and return to the Login Screen.
+
+---
+
+## 👥 Guest Mode
+
+Guest users can:
+- Browse meals.
+- View categories.
+- Open meal details.
+
+Guest users **cannot**:
+- Add meals to favorites.
+
+If a guest attempts to add a meal to favorites:
+- The app prompts them to log in or create an account.
+
+---
+
+## 💾 Data Persistence
+
+- Favorite meals are stored locally.
+- After logging out and logging back in:
+  - All favorite meals remain saved and accessible.
+- The app ensures a smooth experience even with limited or no internet access.
+
+---
+
+## 🧭 Screens Overview
+
+- Splash Screen  
+- Login / Register Screen  
+- Home Screen  
+- Search Screen  
+- Category Screen  
+- Meal Details Screen  
+- Favorites Screen  
+- Profile Screen  
+
+---
+
+## 🛠️ Tech Stack
+
+- **Android (Java)**
+- **Firebase**
+  - Authentication
+  - Realtime Database
+- **Room Database**
+- **RxJava**
+- **Lottie Animations**
+
+---
+
+## 📦 Installation
 
 1. Clone the repository:
    ```bash
-   [git clone https://github.com/yourusername/FoodTrack.git](https://github.com/MohamedAliShaltoot/Android_Project_Meals_App.git)
+   git clone https://github.com/MohamedAliShaltoot/Android_Project_Meals_App.git
