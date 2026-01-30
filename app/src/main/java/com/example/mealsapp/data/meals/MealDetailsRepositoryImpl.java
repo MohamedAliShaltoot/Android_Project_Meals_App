@@ -8,11 +8,11 @@ import io.reactivex.rxjava3.core.Single;
 
 //public class MealDetailsRepositoryImpl implements MealDetailsRepository {
 //private final FavoriteMealDao dao;
-//    private final FirestoreFavoritesRepository firestoreRepo;
+//    private final FirestoreFavoritesDataSource firestoreRepo;
 //
 //    public MealDetailsRepositoryImpl(FavoriteMealDao dao) {
 //        this.dao = dao;
-//        this.firestoreRepo = new FirestoreFavoritesRepository();
+//        this.firestoreRepo = new FirestoreFavoritesDataSource();
 //    }
 //
 //    @Override

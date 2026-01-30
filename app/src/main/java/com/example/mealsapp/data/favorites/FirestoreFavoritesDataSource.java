@@ -1,15 +1,13 @@
-package com.example.mealsapp.utils;
+package com.example.mealsapp.data.favorites;
 
 import com.example.mealsapp.data.database.dao.FavoriteMeal;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.List;
-
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
-public class FirestoreFavoritesRepository {
+public class FirestoreFavoritesDataSource {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final FirebaseAuth auth = FirebaseAuth.getInstance();

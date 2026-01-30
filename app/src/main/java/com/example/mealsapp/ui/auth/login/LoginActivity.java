@@ -9,6 +9,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.mealsapp.R;
+import com.example.mealsapp.data.favorites.FavoritesSyncManager;
+import com.example.mealsapp.data.favorites.SyncFavoritesUseCase;
+import com.example.mealsapp.data.favorites.SyncFavoritesUseCaseImpl;
 import com.example.mealsapp.ui.auth.login.presenter.LoginPresenter;
 import com.example.mealsapp.ui.auth.login.presenter.LoginPresenterImp;
 import com.example.mealsapp.ui.auth.login.presenter.LoginView;
@@ -44,10 +47,16 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         });
+        FavoritesSyncManager manager =
+                new FavoritesSyncManager(getApplicationContext());
+
+        SyncFavoritesUseCase syncUseCase =
+                new SyncFavoritesUseCaseImpl(manager);
+
         presenter = new LoginPresenterImp(
                 this,
                 new LoginRepoImp(this),
-                this // context
+                syncUseCase
         );
 
         btnLogin.setOnClickListener(v ->
