@@ -52,13 +52,6 @@ public class Favouritesfragment extends Fragment implements FavoritesView {
         );
 
         rvFavorites.setAdapter(adapter);
-
-//        presenter = new FavoritesPresenterImpl(
-//                this,
-//                new FavoritesRepositoryImpl(
-//                        MealsDatabase.getInstance(requireContext()).favoriteMealDao()
-//                )
-//        );
         presenter = new FavoritesPresenterImpl(
                 this,
                 new FavoritesRepositoryImpl(

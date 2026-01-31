@@ -17,6 +17,7 @@ public interface MealDetailsContract {
         void loadMeal(String mealId);
         void toggleFavorite();
         void clear();
+        void onAddToCalendarClicked();
     }
 }
 

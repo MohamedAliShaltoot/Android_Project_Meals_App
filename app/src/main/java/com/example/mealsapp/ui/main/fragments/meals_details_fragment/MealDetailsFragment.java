@@ -12,6 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.mealsapp.R;
+import com.example.mealsapp.data.calender.CalendarLocalDataSource;
+import com.example.mealsapp.data.calender.CalendarSyncManager;
+import com.example.mealsapp.data.calender.FirestoreCalendarRepository;
 import com.example.mealsapp.data.database.MealsDatabase;
 import com.example.mealsapp.data.model.Meal;
 import com.example.mealsapp.ui.main.adapters.IngredientsAdapter;
@@ -35,7 +38,7 @@ public class MealDetailsFragment extends Fragment
     private RecyclerView rvIngredients;
     private YouTubePlayerView youtubePlayerView;
     private MealDetailsContract.Presenter presenter;
-
+    private ImageButton btnAddToCalendar;
     @Override
     public View onCreateView(
             LayoutInflater inflater,
@@ -57,21 +60,35 @@ public class MealDetailsFragment extends Fragment
         youtubePlayerView = view.findViewById(R.id.youtubePlayerView);
 
         getLifecycle().addObserver(youtubePlayerView);
-
+        btnAddToCalendar = view.findViewById(R.id.btnAddToCalendar);
+        btnAddToCalendar.setOnClickListener(v -> presenter.onAddToCalendarClicked());
         rvIngredients = view.findViewById(R.id.rvIngredients);
         rvIngredients.setLayoutManager(
                 new LinearLayoutManager(requireContext(),
                         LinearLayoutManager.HORIZONTAL, false)
         );
 
+        CalendarLocalDataSource local = new CalendarLocalDataSource(
+                MealsDatabase.getInstance(requireContext())
+                        .plannedMealDao()
+        );
+
+        FirestoreCalendarRepository remote =
+                new FirestoreCalendarRepository();
+
+        CalendarSyncManager syncManager =
+                new CalendarSyncManager(local, remote);
+
         presenter = new MealDetailsPresenterImpl(
                 this,
                 new MealDetailsRepositoryImpl(
                         MealsDatabase.getInstance(requireContext())
                                 .favoriteMealDao()
-
-                ),requireContext()
+                ),
+                requireContext(),
+                syncManager
         );
+
         btnFavorite.setOnClickListener(v -> presenter.toggleFavorite());
 
         return view;

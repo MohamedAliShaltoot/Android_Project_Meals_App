@@ -68,5 +68,8 @@
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.mealsapp.ui.main.fragments.profile_fragment.ProfileFragment"/>
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.example.mealsapp.ui.main.fragments.calender_fragment.CalendarFragment" />
 
 </navigation>

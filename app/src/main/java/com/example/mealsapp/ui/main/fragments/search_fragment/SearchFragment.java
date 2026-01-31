@@ -90,7 +90,6 @@ public class SearchFragment extends Fragment implements SearchView {
                             hideNoInternet();
                             presenter.search(selectedFilter, query);
                         })
-//
         );
         lottieNoInternet = view.findViewById(R.id.lottieNoInternet);
 

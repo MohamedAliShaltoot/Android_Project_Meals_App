@@ -61,8 +61,6 @@ public class HomeFragment extends Fragment implements HomeContract.View {
             presenter.getRandomMeal();
             presenter.getCategories();
         });
-
-        //presenter = new HomePresenterImp(this, new HomeRepositoryImpl());
         presenter = new HomePresenterImp(
                 this,
                 new HomeRepositoryImpl()
@@ -136,7 +134,7 @@ public class HomeFragment extends Fragment implements HomeContract.View {
 
     @Override
     public void showError(String message) {
-       // do it later
+       // later
     }
 
     @Override

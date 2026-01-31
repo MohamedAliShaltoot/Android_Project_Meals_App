@@ -1,6 +1,8 @@
 package com.example.mealsapp.ui.auth.login.presenter;
 
 import android.content.Intent;
+
+import com.example.mealsapp.data.calender.CalendarSyncManager;
 import com.example.mealsapp.data.favorites.SyncFavoritesUseCase;
 import com.example.mealsapp.ui.auth.login.repo.LoginRepo;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -18,15 +20,17 @@ public class LoginPresenterImp implements LoginPresenter {
     private LoginView view;
     private final LoginRepo repo;
     private final SyncFavoritesUseCase syncFavoritesUseCase;
-
+    private final CalendarSyncManager calendarSyncManager;
     public LoginPresenterImp(
             LoginView view,
             LoginRepo repo,
-            SyncFavoritesUseCase syncFavoritesUseCase
+            SyncFavoritesUseCase syncFavoritesUseCase,
+            CalendarSyncManager calendarSyncManager
     ) {
         this.view = view;
         this.repo = repo;
         this.syncFavoritesUseCase = syncFavoritesUseCase;
+        this.calendarSyncManager = calendarSyncManager;
     }
 
     @Override
@@ -93,23 +97,26 @@ public class LoginPresenterImp implements LoginPresenter {
     }
 
 private void syncFavoritesAndNavigate() {
-    disposable.add(syncFavoritesUseCase.execute()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                    () -> {
-                        if (view != null) {
-                            view.hideLoading();
-                            view.navigateToMain();
-                        }
-                    },
-                    error -> {
-                        if (view != null) {
-                            view.hideLoading();
-                            view.navigateToMain();
-                        }
-                    }
-            ));
+    disposable.add(
+            syncFavoritesUseCase.execute()
+                    .andThen(calendarSyncManager.syncFromFirestore())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            () -> {
+                                if (view != null) {
+                                    view.hideLoading();
+                                    view.navigateToMain();
+                                }
+                            },
+                            error -> {
+                                if (view != null) {
+                                    view.hideLoading();
+                                    view.navigateToMain();
+                                }
+                            }
+                    )
+    );
 }
 
     @Override
