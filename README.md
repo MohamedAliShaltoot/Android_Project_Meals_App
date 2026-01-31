@@ -72,6 +72,7 @@ Each meal includes:
 - Step-by-step preparation instructions
 - Cooking video
 - **Add to Favorites** button
+- **Add to Calender** button
 
 ---
 
@@ -80,6 +81,13 @@ Each meal includes:
 - Available only for **logged-in users**.
 - Displays all meals added to favorites.
 - Users can remove meals at any time.
+- Actions such as adding or removing a meal trigger a **Snackbar** for feedback.
+
+---
+  ## 📭 Calender Screen
+
+- Available only for **logged-in users**.
+- Displays all meals added to Calender.
 - Actions such as adding or removing a meal trigger a **Snackbar** for feedback.
 
 ### 📡 Offline Support
