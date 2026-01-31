@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Outer calendar body -->
+    <path
+        android:fillColor="#3F51B5"
+        android:pathData="M3,4h18v17H3z"/>
+
+    <!-- Top bar -->
+    <path
+        android:fillColor="#303F9F"
+        android:pathData="M3,4h18v4H3z"/>
+
+    <!-- Left ring -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M7,2h2v4H7z"/>
+
+    <!-- Right ring -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M15,2h2v4h-2z"/>
+
+    <!-- Date square -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M7,11h3v3H7z"/>
+
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12,11h3v3h-3z"/>
+
+</vector>

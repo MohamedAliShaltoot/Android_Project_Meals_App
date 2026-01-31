@@ -9,6 +9,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.mealsapp.R;
+import com.example.mealsapp.data.calender.CalendarLocalDataSource;
+import com.example.mealsapp.data.calender.CalendarSyncManager;
+import com.example.mealsapp.data.calender.FirestoreCalendarRepository;
+import com.example.mealsapp.data.database.MealsDatabase;
 import com.example.mealsapp.data.favorites.FavoritesSyncManager;
 import com.example.mealsapp.data.favorites.SyncFavoritesUseCase;
 import com.example.mealsapp.data.favorites.SyncFavoritesUseCaseImpl;
@@ -52,11 +56,18 @@ public class LoginActivity extends AppCompatActivity implements LoginView {
 
         SyncFavoritesUseCase syncUseCase =
                 new SyncFavoritesUseCaseImpl(manager);
-
+        CalendarSyncManager calendarSyncManager =
+                new CalendarSyncManager(
+                        new CalendarLocalDataSource(
+                                MealsDatabase.getInstance(this).plannedMealDao()
+                        ),
+                        new FirestoreCalendarRepository()
+                );
         presenter = new LoginPresenterImp(
                 this,
                 new LoginRepoImp(this),
-                syncUseCase
+                syncUseCase,
+                calendarSyncManager
         );
 
         btnLogin.setOnClickListener(v ->

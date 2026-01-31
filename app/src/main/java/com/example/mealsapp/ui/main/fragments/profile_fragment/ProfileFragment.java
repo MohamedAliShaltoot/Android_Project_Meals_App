@@ -45,12 +45,6 @@ public class ProfileFragment extends Fragment implements ProfileView {
         tvEmail = view.findViewById(R.id.tvEmail);
         imgProfile = view.findViewById(R.id.imgProfile);
         btnLogout = view.findViewById(R.id.btnLogout);
-
-//        presenter = new ProfilePresenterImp(
-//                this,
-//                new ProfileRepositoryImpl(),
-//                requireContext()
-//        );
         presenter = new ProfilePresenterImp(
                 this,
                 new ProfileRepositoryImpl(

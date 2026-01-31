@@ -84,7 +84,6 @@ public class OnboardingActivity extends AppCompatActivity {
     }
 
     private void finishOnboarding() {
-        // Navigate to MainActivity or wherever
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }
